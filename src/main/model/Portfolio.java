@@ -99,20 +99,18 @@ public class Portfolio {
         }
     }
 
-    //EFFECTS: calculates return % for portfolio
-    @SuppressWarnings("checkstyle:WhitespaceAround")
-    public double calculateReturnAmountDollar(){
+    //EFFECTS: calculates return $ amount for portfolio
+    public double calculateReturnAmountDollar() {
         double i = 0.0F;
         for (Investment inv: this.investments) {
             double percent = inv.getReturnPercentage() / 100;
             i += (inv.getPrice() * percent);
         }
-        //return df.format(parseFloat(i));
         return (double) Math.round(i);
     }
 
-    @SuppressWarnings("checkstyle:WhitespaceAround")
-    public String calculateReturnAmountPercent(){
+    //EFFECTS: calculates return % for portfolio
+    public String calculateReturnAmountPercent() {
         double i = this.calculateReturnAmountDollar();
         double j = this.getPortfolioCapital();
         return df.format((i / j) * 100);

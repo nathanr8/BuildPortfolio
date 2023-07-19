@@ -146,7 +146,7 @@ public class BuildPortfolio {
         System.out.printf("| %-10s | %-8s | %-15s | %-20s | %-12s  |%n", "Name", "Quantity", "Purchase Price",
                 "Expected Return (%)", "Industry");
         System.out.printf("| %-74s |%n", "--------------------------------------------" + "-"
-              + "----------------------------------");
+                + "----------------------------------");
         for (Investment i : p.getInvestments()) {
             System.out.printf("| %-10s | %-8s | %-15s | %-20s | %-13s |%n", i.getInvestmentname(), i.getPrice(),
                     i.getPrice(), i.getReturnPercentage(), i.getSector());
@@ -193,10 +193,10 @@ public class BuildPortfolio {
         System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s | %n", "Name", "Capital Invested ($)",
                 "Expected Return (%)", "Strong Economic Sector", "Available Capital");
         System.out.printf("| %-104s |%n", "-------------------------------------------------------------------------"
-            + "--------------------------------");
+                + "--------------------------------");
         for (Portfolio p : portfolioList) {
-            System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(), p.getInitialCapital(),
-                    p.getPortfolioName(), p.getPreferredSector(), p.getAvailableCapital());
+            System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(),
+                    p.getPortfolioCapital(), p.getPortfolioName(), p.getPreferredSector(), p.getAvailableCapital());
         }
 
         boolean keepGoing2 = true;
