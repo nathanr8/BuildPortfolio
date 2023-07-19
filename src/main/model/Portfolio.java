@@ -1,22 +1,31 @@
 package model;
 
+
 import java.util.ArrayList;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
+
+
 
 public class Portfolio {
     private String portfolioName;
     private ArrayList<Investment> investments;
     private String preferredSector;
-    private int capital;
+    private int initialCapital;
     private int availableCapital;
+    private int portfolioCapital;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
 
     //EFFECTS: Constructs a new portfolio with name, preferred sector, and starting capital
-    public Portfolio(String portfolioname, String preferredSector, int capital) {
+    public Portfolio(String portfolioname, String preferredSector, int initialCapital) {
         this.portfolioName = portfolioname;
         this.preferredSector = preferredSector;
-        this.capital = capital;
-        this.availableCapital = capital;
+        this.initialCapital = initialCapital;
+        this.availableCapital = initialCapital;
         this.investments = new ArrayList<>();
+        this.portfolioCapital = 0;
     }
 
     // getters
@@ -28,8 +37,8 @@ public class Portfolio {
         return preferredSector;
     }
 
-    public int getCapital() {
-        return capital;
+    public int getInitialCapital() {
+        return initialCapital;
     }
 
     public ArrayList<Investment> getInvestments() {
@@ -38,6 +47,12 @@ public class Portfolio {
 
     public int getAvailableCapital() {
         return availableCapital;
+    }
+
+    public int getPortfolioCapital() {
+        int i = this.getInitialCapital();
+        int j = this.getAvailableCapital();
+        return (i - j);
     }
 
     // setters
@@ -57,8 +72,8 @@ public class Portfolio {
     //REQUIRES: capital >= 1000
     //MODIFIES: this
     //EFFECTS: sets portfolio's starting capital
-    public void setCapital(int capital) {
-        this.capital = capital;
+    public void setInitialCapital(int initialCapital) {
+        this.initialCapital = initialCapital;
     }
 
     //REQUIRES: capital >= 1000
@@ -84,8 +99,23 @@ public class Portfolio {
         }
     }
 
-    public void calculateReturn(){
-        // stub
+    //EFFECTS: calculates return % for portfolio
+    @SuppressWarnings("checkstyle:WhitespaceAround")
+    public double calculateReturnAmountDollar(){
+        double i = 0.0F;
+        for (Investment inv: this.investments) {
+            double percent = inv.getReturnPercentage() / 100;
+            i += (inv.getPrice() * percent);
+        }
+        //return df.format(parseFloat(i));
+        return (double) Math.round(i);
+    }
+
+    @SuppressWarnings("checkstyle:WhitespaceAround")
+    public String calculateReturnAmountPercent(){
+        double i = this.calculateReturnAmountDollar();
+        double j = this.getPortfolioCapital();
+        return df.format((i / j) * 100);
     }
 
     //REQUIRES: quantity >= 1, portfolio has # of selected investments >= quantity,

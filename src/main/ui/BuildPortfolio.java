@@ -13,7 +13,7 @@ public class BuildPortfolio {
     private Investment nextEra;
     private Investment pfizer;
     private Portfolio portfolioA;
-    private Investment newInvestment;
+//    private Investment newInvestment;
     private ArrayList<Investment> investmentList;
     private ArrayList<Portfolio> portfolioList;
     private Scanner input;
@@ -143,11 +143,13 @@ public class BuildPortfolio {
         String portfolioName = input.next();
         Portfolio p = lookupPortfolioByName(portfolioName);
 
-        System.out.printf("| %-10s | %-8s | %-15s | %-20s | %-12s  |%n", "Name", "Quantity", "Purchase Price", "Expected Return (%)", "Industry");
-        System.out.printf("| %-74s |%n", "------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-8s | %-15s | %-20s | %-12s  |%n", "Name", "Quantity", "Purchase Price",
+                "Expected Return (%)", "Industry");
+        System.out.printf("| %-74s |%n", "--------------------------------------------" + "-"
+              + "----------------------------------");
         for (Investment i : p.getInvestments()) {
-            System.out.printf("| %-10s | %-8s | %-15s | %-20s | %-13s |%n", i.getInvestmentname(), i.getPrice(), i.getPrice(),
-                    i.getReturnPercentage(), i.getSector());
+            System.out.printf("| %-10s | %-8s | %-15s | %-20s | %-13s |%n", i.getInvestmentname(), i.getPrice(),
+                    i.getPrice(), i.getReturnPercentage(), i.getSector());
         }
 
     }
@@ -193,7 +195,7 @@ public class BuildPortfolio {
         System.out.printf("| %-104s |%n", "-------------------------------------------------------------------------"
             + "--------------------------------");
         for (Portfolio p : portfolioList) {
-            System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(), p.getCapital(),
+            System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(), p.getInitialCapital(),
                     p.getPortfolioName(), p.getPreferredSector(), p.getAvailableCapital());
         }
 
@@ -231,10 +233,10 @@ public class BuildPortfolio {
         Integer capital = Integer.valueOf(input.next());
 
         if (capital > 1000) {
-            newPortfolio.setCapital(capital);
+            newPortfolio.setInitialCapital(capital);
             newPortfolio.setAvailableCapital(capital);
             portfolioList.add(newPortfolio);
-            System.out.println("");
+            System.out.println(" ");
             System.out.println("Portfolio successfully made!");
         } else {
             System.out.println("Portfolio cannot start with capital less than $1000... \n");
@@ -244,8 +246,8 @@ public class BuildPortfolio {
     //MODIFIES: this
     //EFFECTS: adds investment to portfolio's list of investments
     private void addInvestmentToPortfolio() {
-        Investment selectedInvestment;
-        Portfolio selectedPortfolio;
+//        Investment selectedInvestment;
+ //       Portfolio selectedPortfolio;
         System.out.println("Portfolio name you would like to add investment to: ");
         String portfolioName = input.next();
         Portfolio p = lookupPortfolioByName(portfolioName);
@@ -299,7 +301,7 @@ public class BuildPortfolio {
         if (investmentPrice > 0) {
             newInvestment.setPrice(investmentPrice);
             investmentList.add(newInvestment);
-            System.out.println("");
+            System.out.println(" ");
             System.out.println("Investment added successfully");
         } else {
             System.out.println("Investment cannot start with negative price... \n");
