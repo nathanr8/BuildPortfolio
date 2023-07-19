@@ -7,8 +7,7 @@ public class Investment {
     private int price;
 
 
-    //EFFECTS: constructs an investment with a given name, return#,
-    // and economic sector
+    //EFFECTS: constructs an investment with a given name, return %, economic sector, and price
     public Investment(String investmentname, float returnPercentage, String sector, int price) {
         this.investmentname = investmentname;
         this.returnPercentage = returnPercentage;
@@ -36,6 +35,7 @@ public class Investment {
 
 
     // setters
+
     //MODIFIES: this
     //EFFECTS: sets investment's name
     public void setInvestmentname(String investmentname) {
