@@ -1,5 +1,6 @@
 package model;
 
+// Represents an investment in the market one can too to an investment portfolio
 public class Investment {
     private String investmentname;
     private float returnPercentage;
@@ -7,6 +8,7 @@ public class Investment {
     private int price;
 
 
+    //REQUIRES: price > 0
     //EFFECTS: constructs an investment with a given name, return %, economic sector, and price
     public Investment(String investmentname, float returnPercentage, String sector, int price) {
         this.investmentname = investmentname;

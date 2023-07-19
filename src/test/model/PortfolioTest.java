@@ -11,12 +11,14 @@ public class PortfolioTest {
     private Portfolio testPortfolio;
     private Investment testInvestment;
     private Investment testInvestment2;
+    private Investment testInvestment3;
 
     @BeforeEach
     void runBefore() {
         testPortfolio = new Portfolio("Pname", "IT", 50000);
         testInvestment = new Investment("iName", 10.0F, "IT", 50);
         testInvestment2 = new Investment("iName2", 1.0F, "Healthcare", 28);
+        testInvestment3 = new Investment("iName3", 10.0F, "RANDOM", 50);
     }
 
     @Test
@@ -154,16 +156,33 @@ public class PortfolioTest {
     }
 
     @Test
-    void testCalculatePortfolioReturnDollar() {
+    void testCalculatePortfolioReturnDollarWithSector() {
         testPortfolio.addInvestments(testInvestment, 5);
+        double i = testPortfolio.calculateReturnAmountDollar();
+        assertEquals(29.0, i);
+
+    }
+
+    @Test
+    void testCalculatePortfolioReturnDollarWithoutSector() {
+        testPortfolio.addInvestments(testInvestment3, 5);
         double i = testPortfolio.calculateReturnAmountDollar();
         assertEquals(25.0, i);
 
     }
 
     @Test
-    void testCalculatePortfolioReturnDollarMulti() {
+    void testCalculatePortfolioReturnDollarMultiWithSector() {
         testPortfolio.addInvestments(testInvestment, 5);
+        testPortfolio.addInvestments(testInvestment2, 16);
+        double i = testPortfolio.calculateReturnAmountDollar();
+        assertEquals(33.00, i);
+
+    }
+
+    @Test
+    void testCalculatePortfolioReturnDollarMultiNoSector() {
+        testPortfolio.addInvestments(testInvestment3, 5);
         testPortfolio.addInvestments(testInvestment2, 16);
         double i = testPortfolio.calculateReturnAmountDollar();
         assertEquals(29.00, i);
@@ -183,12 +202,20 @@ public class PortfolioTest {
     void testCalculatePortfolioReturnPercent() {
         testPortfolio.addInvestments(testInvestment, 5);
         String j = testPortfolio.calculateReturnAmountPercent();
-        assertEquals("10.00", j);
+        assertEquals("11.60", j);
     }
 
     @Test
     void testCalculatePortfolioReturnPercentMulti() {
         testPortfolio.addInvestments(testInvestment, 5);
+        testPortfolio.addInvestments(testInvestment2, 16);
+        String j = testPortfolio.calculateReturnAmountPercent();
+        assertEquals("4.73", j);
+    }
+
+    @Test
+    void testCalculatePortfolioReturnPercentMultiNotSector() {
+        testPortfolio.addInvestments(testInvestment3, 5);
         testPortfolio.addInvestments(testInvestment2, 16);
         String j = testPortfolio.calculateReturnAmountPercent();
         assertEquals("4.15", j);

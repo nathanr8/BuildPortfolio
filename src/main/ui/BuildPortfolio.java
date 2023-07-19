@@ -6,6 +6,7 @@ import model.Portfolio;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// Portfolio Builder application
 public class BuildPortfolio {
     private Investment google;
     private Investment blackrock;
@@ -13,7 +14,7 @@ public class BuildPortfolio {
     private Investment nextEra;
     private Investment pfizer;
     private Portfolio portfolioA;
-//    private Investment newInvestment;
+    private Portfolio portfolioB;
     private ArrayList<Investment> investmentList;
     private ArrayList<Portfolio> portfolioList;
     private Scanner input;
@@ -38,12 +39,10 @@ public class BuildPortfolio {
         portfolioList.add(portfolioA);
         boolean keepGoing = true;
         String command = null;
-
         while (keepGoing) {
             displayMenu();
             command = input.next();
             command = command.toLowerCase();
-
             if (command.equals("q")) {
                 keepGoing = false;
             } else {
@@ -68,14 +67,21 @@ public class BuildPortfolio {
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes portfolio
+    // EFFECTS: initializes portfolios
     private void initPortfolios() {
-        portfolioA = new Portfolio("PortfolioA", "Technology", 10000);
+        portfolioA = new Portfolio("PortfolioA", "IT", 10000);
         portfolioA.addInvestments(google, 2);
         portfolioA.addInvestments(blackrock, 2);
         portfolioA.addInvestments(tesla, 2);
         portfolioA.addInvestments(nextEra, 2);
         portfolioA.addInvestments(pfizer, 2);
+
+        portfolioB = new Portfolio("PortfolioB", "Energy", 10000);
+        portfolioB.addInvestments(google, 2);
+        portfolioB.addInvestments(blackrock, 2);
+        portfolioB.addInvestments(tesla, 2);
+        portfolioB.addInvestments(nextEra, 2);
+        portfolioB.addInvestments(pfizer, 2);
     }
 
     // EFFECTS: displays menu of options to user
@@ -104,8 +110,7 @@ public class BuildPortfolio {
         }
     }
 
-    //EFFECTS: display menu for adding investment, deleting investment
-    // adding portfolio, and deleting portfolio
+    //EFFECTS: display menu for portfolio section
     private void portfolioDisplayMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\tb -> New Portfolio");
@@ -154,6 +159,7 @@ public class BuildPortfolio {
 
     }
 
+    //REQUIRES: portfolio has at least one of specified investment
     //MODIFIES: this
     //EFFECTS: deletes investment from portfolio's list of investments
     private void deleteInvestmentFromPortfolio() {
@@ -196,7 +202,8 @@ public class BuildPortfolio {
                 + "--------------------------------");
         for (Portfolio p : portfolioList) {
             System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(),
-                    p.getPortfolioCapital(), p.getPortfolioName(), p.getPreferredSector(), p.getAvailableCapital());
+                    p.getPortfolioCapital(), p.calculateReturnAmountPercent(), p.getPreferredSector(),
+                    p.getAvailableCapital());
         }
 
         boolean keepGoing2 = true;
@@ -215,6 +222,7 @@ public class BuildPortfolio {
 
     }
 
+    //REQUIRES: portfolioName is not already in use
     // MODIFIES: this
     // EFFECTS: creates a portfolio, adds it to portfolioList
     private void newPortfolio() {
@@ -246,8 +254,6 @@ public class BuildPortfolio {
     //MODIFIES: this
     //EFFECTS: adds investment to portfolio's list of investments
     private void addInvestmentToPortfolio() {
-//        Investment selectedInvestment;
- //       Portfolio selectedPortfolio;
         System.out.println("Portfolio name you would like to add investment to: ");
         String portfolioName = input.next();
         Portfolio p = lookupPortfolioByName(portfolioName);
@@ -277,6 +283,7 @@ public class BuildPortfolio {
         }
     }
 
+    //REQUIRES: investmentName is not already in market
     // MODIFIES: this
     // EFFECTS: creates an investment, adds it to investmentList
     private void newInvestment() {

@@ -2,12 +2,11 @@ package model;
 
 
 import java.util.ArrayList;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 
 
-
+// Represents an investment portfolio one can add investments to
 public class Portfolio {
     private String portfolioName;
     private ArrayList<Investment> investments;
@@ -16,8 +15,10 @@ public class Portfolio {
     private int availableCapital;
     private int portfolioCapital;
     private static final DecimalFormat df = new DecimalFormat("0.00");
+    private float strongSectorBonus;
 
 
+    //REQUIRES: initialCapital >= 1000
     //EFFECTS: Constructs a new portfolio with name, preferred sector, and starting capital
     public Portfolio(String portfolioname, String preferredSector, int initialCapital) {
         this.portfolioName = portfolioname;
@@ -26,6 +27,7 @@ public class Portfolio {
         this.availableCapital = initialCapital;
         this.investments = new ArrayList<>();
         this.portfolioCapital = 0;
+        this.strongSectorBonus = 1.05F;
     }
 
     // getters
@@ -69,22 +71,21 @@ public class Portfolio {
         this.preferredSector = preferredSector;
     }
 
-    //REQUIRES: capital >= 1000
+    //REQUIRES: initialCapital >= 1000
     //MODIFIES: this
     //EFFECTS: sets portfolio's starting capital
     public void setInitialCapital(int initialCapital) {
         this.initialCapital = initialCapital;
     }
 
-    //REQUIRES: capital >= 1000
+
     //MODIFIES: this
     //EFFECTS: sets portfolio's starting available capital
     public void setAvailableCapital(int capital) {
         this.availableCapital = capital;
     }
 
-    //REQUIRES: i.getInvestmentname() in future, price*quantity <= avail. capital, quantity >= 0
-    // quantity >= 1
+    //REQUIRES: (price * quantity) <= available capital, quantity >= 1
     //MODIFIES: this
     //EFFECTS: adds an investment to portfolio's investment list
     public String addInvestments(Investment i, int quantity) {
@@ -99,10 +100,14 @@ public class Portfolio {
         }
     }
 
-    //EFFECTS: calculates return $ amount for portfolio
+    //EFFECTS: calculates $ amount return for portfolio
     public double calculateReturnAmountDollar() {
         double i = 0.0F;
         for (Investment inv: this.investments) {
+            if (inv.getSector() == this.getPreferredSector()) {
+                float j = strongSectorBonus * inv.getReturnPercentage();
+                inv.setReturnPercentage(j);
+            }
             double percent = inv.getReturnPercentage() / 100;
             i += (inv.getPrice() * percent);
         }
@@ -116,8 +121,7 @@ public class Portfolio {
         return df.format((i / j) * 100);
     }
 
-    //REQUIRES: quantity >= 1, portfolio has # of selected investments >= quantity,
-    // cannot remove more than portfolio has
+    //REQUIRES: quantity >= 1, portfolio # of selected investments >= quantity,
     //MODIFIES: this
     //EFFECTS: removes investment from portfolio, adds back capital to available capital
     public void removeInvestment(Investment i, int quantity) {
@@ -126,21 +130,4 @@ public class Portfolio {
         }
         availableCapital = availableCapital + (i.getPrice() * quantity);
     }
-
-//    //EFFECTS: prints out a list of all investments in the portfolio
-//    public void printInvestments() {
-//        System.out.printf("| %-10s | %-6s %2s |%n", this.getPortfolioName(), "Sector:", this.getPreferredSector());
-//        System.out.println("Investments:");
-//        System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", "Name", "Price", "Expected Return (%)", "Industry");
-//        System.out.printf("| %-54s |%n", "---------------------------------------------------------");
-//
-//        for (Investment i : investments) {
-//            System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", i.getInvestmentname(), i.getPrice(),
-//                    i.getReturnPercentage(), i.getSector());
-//        }
-//    }
-
-
-
-
 }
