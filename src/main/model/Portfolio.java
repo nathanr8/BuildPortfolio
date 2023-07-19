@@ -127,18 +127,18 @@ public class Portfolio {
         availableCapital = availableCapital + (i.getPrice() * quantity);
     }
 
-    //EFFECTS: prints out a list of all investments in the portfolio
-    public void printInvestments() {
-        System.out.printf("| %-10s | %-6s %2s |%n", this.getPortfolioName(), "Sector:", this.getPreferredSector());
-        System.out.println("Investments:");
-        System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", "Name", "Price", "Expected Return (%)", "Industry");
-        System.out.printf("| %-54s |%n", "---------------------------------------------------------");
-
-        for (Investment i : investments) {
-            System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", i.getInvestmentname(), i.getPrice(),
-                    i.getReturnPercentage(), i.getSector());
-        }
-    }
+//    //EFFECTS: prints out a list of all investments in the portfolio
+//    public void printInvestments() {
+//        System.out.printf("| %-10s | %-6s %2s |%n", this.getPortfolioName(), "Sector:", this.getPreferredSector());
+//        System.out.println("Investments:");
+//        System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", "Name", "Price", "Expected Return (%)", "Industry");
+//        System.out.printf("| %-54s |%n", "---------------------------------------------------------");
+//
+//        for (Investment i : investments) {
+//            System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", i.getInvestmentname(), i.getPrice(),
+//                    i.getReturnPercentage(), i.getSector());
+//        }
+//    }
 
 
 
