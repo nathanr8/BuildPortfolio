@@ -19,7 +19,7 @@ public class BuildPortfolio {
     private ArrayList<Portfolio> portfolioList;
     private Scanner input;
 
-    // EFFECT: runs the portfolio builder application
+    // EFFECTS: runs the portfolio builder application
     public BuildPortfolio() {
         runBuilder();
     }
@@ -148,13 +148,13 @@ public class BuildPortfolio {
         String portfolioName = input.next();
         Portfolio p = lookupPortfolioByName(portfolioName);
 
-        System.out.printf("| %-10s | %-8s | %-15s | %-20s | %-12s  |%n", "Name", "Quantity", "Purchase Price",
+        System.out.printf("| %-10s | %-15s | %-20s | %-12s  |%n", "Name", "Purchase Price",
                 "Expected Return (%)", "Industry");
-        System.out.printf("| %-74s |%n", "--------------------------------------------" + "-"
-                + "----------------------------------");
+        System.out.printf("| %-66s |%n", "-----------------------------------------" + "-"
+                + "-------------------------");
         for (Investment i : p.getInvestments()) {
-            System.out.printf("| %-10s | %-8s | %-15s | %-20s | %-13s |%n", i.getInvestmentname(), i.getPrice(),
-                    i.getPrice(), i.getReturnPercentage(), i.getSector());
+            System.out.printf("| %-10s | %-15s | %-20s | %-13s |%n", i.getInvestmentname(), i.getPrice(),
+                    i.getReturnPercentage(), i.getSector());
         }
 
     }
