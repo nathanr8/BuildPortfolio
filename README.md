@@ -16,3 +16,5 @@ As a Computer Science and Business major, I'm passionate about leveraging techno
 - As a user, I want a visual display of an investment portfolio
 - As a user, I want to be able to see a list of all of my investments
 - As a user, I want to be able to see a list of all of my portfolios
+- As a user, I want to be able to be able to save all current investments and portfolios to a file (if I so choose)
+- As a user, I want to be able to be able to load my portfolios and investments from file (if I so choose)
