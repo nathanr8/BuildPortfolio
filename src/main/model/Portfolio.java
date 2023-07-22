@@ -1,13 +1,17 @@
 package model;
 
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.text.DecimalFormat;
 
 
 
 // Represents an investment portfolio one can add investments to
-public class Portfolio {
+public class Portfolio implements Writable {
     private String portfolioName;
     private ArrayList<Investment> investments;
     private String preferredSector;
@@ -129,5 +133,27 @@ public class Portfolio {
             this.investments.remove(i);
         }
         availableCapital = availableCapital + (i.getPrice() * quantity);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Name", portfolioName);
+        json.put("Starting Capital", initialCapital);
+        json.put("Available Capital", availableCapital);
+        json.put("Strong economic sector", preferredSector);
+        json.put("Investments", investmentsToJson());
+        return json;
+    }
+
+    // EFFECTS: returns investments in this portfolio as a JSON array
+    private JSONArray investmentsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Investment t : investments) {
+            jsonArray.put(t.toJson());
+        }
+
+        return jsonArray;
     }
 }

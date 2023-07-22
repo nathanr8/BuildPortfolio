@@ -2,7 +2,11 @@ package ui;
 
 import model.Investment;
 import model.Portfolio;
+import model.Market;
+import persistence.Reader;
+import persistence.Writer;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,9 +22,17 @@ public class BuildPortfolio {
     private ArrayList<Investment> investmentList;
     private ArrayList<Portfolio> portfolioList;
     private Scanner input;
+    private Market myMarket;
+
+
+
+    private static final String JSON_STORAGE = "./data/buildPortfolio.json";
+    //private buildPortfolio;
+    private Writer jsonWriter;
+    private Reader jsonReader;
 
     // EFFECTS: runs the portfolio builder application
-    public BuildPortfolio() {
+    public BuildPortfolio() throws FileNotFoundException {
         runBuilder();
     }
 

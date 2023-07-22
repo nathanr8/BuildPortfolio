@@ -1,7 +1,10 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // Represents an investment in the market one can too to an investment portfolio
-public class Investment {
+public class Investment implements Writable {
     private String investmentname;
     private float returnPercentage;
     private String sector;
@@ -62,5 +65,15 @@ public class Investment {
         this.price = price;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Name", investmentname);
+        json.put("Sector", sector);
+        json.put("Return %", returnPercentage);
+        json.put("Price", price);
+        return json;
+    }
 }
+
 
