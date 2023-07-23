@@ -2,6 +2,7 @@ package persistence;
 
 import model.Investment;
 import model.Portfolio;
+import model.Market;
 
 import org.json.JSONObject;
 import java.io.*;
@@ -30,18 +31,16 @@ public class Writer {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of portfolios to file
-    public void writePortfolios(Portfolio p) {
-        JSONObject json = p.toJson();
+    // EFFECTS: writers a JSON representation of the market to file
+    public void write(Market market) {
+        JSONObject json = market.toJson();
         saveToFile(json.toString(TAB));
     }
 
-    // MODIFIES: this
-    // EFFECTS: writes JSON representation of passwords to file
-    public void writeInvestment(Investment i) {
-        JSONObject json = i.toJson();
-        saveToFile(json.toString(TAB));
-    }
+//    public void writeP(Portfolio portfolio) {
+//        JSONObject json = portfolio.toJson();
+//        saveToFile(json.toString(TAB));
+//    }
 
     // MODIFIES: this
     // EFFECTS: closes writer

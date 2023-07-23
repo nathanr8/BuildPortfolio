@@ -142,12 +142,12 @@ public class Portfolio implements Writable {
         json.put("Starting Capital", initialCapital);
         json.put("Available Capital", availableCapital);
         json.put("Strong economic sector", preferredSector);
-        json.put("Investments", investmentsToJson());
+        json.put("InvestmentsP", investmentsToJson());
         return json;
     }
 
     // EFFECTS: returns investments in this portfolio as a JSON array
-    private JSONArray investmentsToJson() {
+    public JSONArray investmentsToJson() {
         JSONArray jsonArray = new JSONArray();
 
         for (Investment t : investments) {

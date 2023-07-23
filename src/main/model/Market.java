@@ -1,9 +1,13 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import persistence.Writable;
 
-public class Market {
+import java.util.ArrayList;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
+
+public class Market implements Writable {
     private Investment google;
     private Investment blackrock;
     private Investment tesla;
@@ -19,6 +23,23 @@ public class Market {
     public Market() {
         investmentList = new ArrayList<>();
         portfolioList = new ArrayList<>();
+    }
+
+    public ArrayList<Investment> getInvestmentList() {
+        return this.investmentList;
+    }
+
+    public ArrayList<Portfolio> getPortfolioList() {
+        return this.portfolioList;
+    }
+
+
+    public void addPortfolio(Portfolio portfolio) {
+        portfolioList.add(portfolio);
+    }
+
+    public void addInvestment(Investment investment) {
+        investmentList.add(investment);
     }
 
 
@@ -62,13 +83,104 @@ public class Market {
     //REQUIRES: portfolio is already constructed
     //MODIFIES: this
     //EFFECTS: removes portfolio from portfolioList
-    private void deletePortfolio() {
-        System.out.println("Name of portfolio you would like to delete?");
-        String portfolioName = input.next();
-        Portfolio port = lookupPortfolioByName(portfolioName);
-        this.portfolioList.remove(port);
-        viewPortfolios();
+    public void deletePortfolio(Portfolio portfolioName) {
+        portfolioList.remove(portfolioName);
     }
+
+    // EFFECTS: displays all portfolios currently made
+    public void viewPortfolios() {
+        for (Portfolio p : portfolioList) {
+            System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(),
+                    p.getPortfolioCapital(), p.calculateReturnAmountPercent(), p.getPreferredSector(),
+                    p.getAvailableCapital());
+        }
+    }
+
+    // EFFECTS: displays all investments available in the market
+    public void viewInvestments() {
+        for (Investment i : investmentList) {
+            System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", i.getInvestmentname(), i.getPrice(),
+                    i.getReturnPercentage(), i.getSector());
+        }
+    }
+
+    // REQUIRES: portfolioName is the name of an existing portfolio
+    // EFFECTS: returns portfolio that has name portfolioName
+    public Portfolio lookupPortfolioByName(String portfolioName) {
+        Portfolio port = null;
+        for (Portfolio p : portfolioList) {
+            if (p.getPortfolioName().toLowerCase().equals(portfolioName.toLowerCase())) {
+                port = p;
+            }
+        }
+        return port;
+    }
+
+    // REQUIRES: investmentName is the name of an existing portfolio
+    // EFFECTS: returns investment that has name as investmentName
+    public Investment lookupInvestmentByName(String investmentName) {
+        Investment inv = null;
+        for (Investment i : investmentList) {
+            if (i.getInvestmentname().toLowerCase().equals(investmentName.toLowerCase())) {
+                inv = i;
+            }
+        }
+        return inv;
+    }
+
+    //REQUIRES: portfolioName is not already in use
+    // MODIFIES: this
+    // EFFECTS: creates a portfolio, adds it to portfolioList
+    public Portfolio newPortfolio(String name, String sector, Integer capital) {
+        Portfolio newPortfolio;
+        newPortfolio = new Portfolio(name, sector, capital);
+        newPortfolio.setInitialCapital(capital);
+        newPortfolio.setAvailableCapital(capital);
+        portfolioList.add(newPortfolio);
+        return newPortfolio;
+    }
+
+    //REQUIRES: investmentName is not already in market
+    // MODIFIES: this
+    // EFFECTS: creates an investment, adds it to investmentList
+    public Investment newInvestment(String name, Float returnP, String sector, Integer price) {
+        Investment newInvestment;
+        newInvestment = new Investment(name, returnP, sector, price);
+        investmentList.add(newInvestment);
+        return newInvestment;
+    }
+
+    // EFFECTS: Writes a market to JSON data
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("portfolio", portfolioToJson());
+        json.put("investment", investmentToJson());
+        return json;
+    }
+
+    // EFFECTS: Writes the list of portfolios to JSON data
+    private JSONArray portfolioToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Portfolio portfolio : portfolioList) {
+            jsonArray.put(portfolio.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    // EFFECTS: Writes the list of investments to JSON data
+    private JSONArray investmentToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Investment investment : investmentList) {
+            jsonArray.put(investment.toJson());
+        }
+
+        return jsonArray;
+    }
+
 
 
 }

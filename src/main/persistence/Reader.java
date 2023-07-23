@@ -1,5 +1,6 @@
 package persistence;
 
+import model.Market;
 import model.Portfolio;
 import model.Investment;
 
@@ -7,11 +8,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import org.json.*;
 
-import javax.sound.sampled.Port;
 
 // This class represents a reader that reads the portfolios and investments from JSON data stored in files
 public class Reader {
@@ -24,18 +25,10 @@ public class Reader {
 
     // EFFECTS: reads portfolio from file and returns it;
     // throws the IOException if an error occurs reading data from file
-    public Portfolio readPortfolio() throws IOException {
+    public Market read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parsePortfolio(jsonObject);
-    }
-
-    // EFFECTS: reads investment from file and returns it;
-    // throws the IOException if an error occurs reading data from file
-    public Investment readInvestment() throws IOException {
-        String jsonData = readFile(source);
-        JSONObject jsonObject = new JSONObject(jsonData);
-        return parseInvestment(jsonObject);
+        return parseMarket(jsonObject);
     }
 
     // EFFECTS: reads source file as a string then returns it
@@ -48,41 +41,71 @@ public class Reader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses the portfolio from JSON object and returns it
-    private Portfolio parsePortfolio(JSONObject jsonObject) {
-        String portfolioName = jsonObject.getString("Name");
-        Integer initialCapital = jsonObject.getInt("Starting Capital");
-        Integer availableCapital = jsonObject.getInt("Available Capital");
-        String preferredSector = jsonObject.getString("Strong economic sector");
-        Portfolio portfolio = new Portfolio(portfolioName, preferredSector, initialCapital);
-        addMultipleInvestmentJson(portfolio, jsonObject);
-        return portfolio;
+
+    private Market parseMarket(JSONObject jsonObject) {
+        Market market = new Market();
+        addMultipleInvestmentJson(market, jsonObject);
+        addMultiplePortfolioJson(market, jsonObject);
+        return market;
     }
 
-    // EFFECTS: parses the investment from JSON object and returns it
-    private Investment parseInvestment(JSONObject jsonObject) {
+//    private Portfolio parsePortfolio(JSONObject jsonObject) {
+//        Portfolio portfolio = new Portfolio(null, null, 1000);
+//        addMultipleInvestmentToPortfolioJson(portfolio, jsonObject);
+//        return portfolio;
+//    }
+
+    // MODIFIES: market
+    // EFFECTS: parses multiple investments from JSON object and adds them to market
+    private void addMultipleInvestmentJson(Market market, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("investment");
+        for (Object json: jsonArray) {
+            JSONObject nextInvestment = (JSONObject) json;
+            addInvestmentJson(market, nextInvestment);
+        }
+    }
+
+    // MODIFIES: market
+    // EFFECTS: parses multiple portfolios from JSON object and adds them to market
+    private void addMultiplePortfolioJson(Market market, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("portfolio");
+        for (Object json: jsonArray) {
+            JSONObject nextPortfolio = (JSONObject) json;
+            addPortfolioJson(market, nextPortfolio);
+        }
+    }
+
+
+    // MODIFIES: market
+    // EFFECTS: parses singular investment from JSON object and adds it to the market
+    private void addInvestmentJson(Market market, JSONObject jsonObject) {
         String investmentName = jsonObject.getString("Name");
         String sector = jsonObject.getString("Sector");
         float returnPercentage = jsonObject.getFloat("Return %");
         Integer price = jsonObject.getInt("Price");
         Investment investment = new Investment(investmentName, returnPercentage, sector, price);
-        return investment;
+
+        market.newInvestment(investmentName, returnPercentage, sector, price);
+    }
+
+    // MODIFIES: market
+    // EFFECTS: parses singular portfolio from JSON object and adds it to the market
+    private void addPortfolioJson(Market market, JSONObject jsonObject) {
+        String portfolioName = jsonObject.getString("Name");
+        Integer initialCapital = jsonObject.getInt("Starting Capital");
+        Integer availableCapital = jsonObject.getInt("Available Capital");
+        String preferredSector = jsonObject.getString("Strong economic sector");
+        Portfolio portfolio = new Portfolio(portfolioName, preferredSector, initialCapital);
+
+        addMultipleInvestmentToPortfolioJson(portfolio, jsonObject);
+
+        market.addPortfolio(portfolio);
 
     }
 
     // MODIFIES: portfolio
-    // EFFECTS: parses multiple investments from JSON object and adds them to a portfolio
-    private void addMultipleInvestmentJson(Portfolio portfolio, JSONObject jsonObject) {
-        JSONArray jsonArray = jsonObject.getJSONArray("portfolio");
-        for (Object json: jsonArray) {
-            JSONObject nextInvestment = (JSONObject) json;
-            addInvestmentJson(portfolio, nextInvestment);
-        }
-    }
-
-    // MODIFIES: wardrobe
-    // EFFECTS: parses singular clothing from JSON object and adds it to the wardrobe
-    private void addInvestmentJson(Portfolio portfolio, JSONObject jsonObject) {
+    // EFFECTS: parses singular investment from JSON object and adds it to the portfolio
+    private void addInvestmentPortfolioJson(Portfolio portfolio, JSONObject jsonObject) {
         String investmentName = jsonObject.getString("Name");
         String sector = jsonObject.getString("Sector");
         float returnPercentage = jsonObject.getFloat("Return %");
@@ -91,4 +114,15 @@ public class Reader {
 
         portfolio.addInvestments(investment, 1);
     }
+
+    // MODIFIES: market
+    // EFFECTS: parses multiple investments from JSON object and adds them to portfolio
+    private void addMultipleInvestmentToPortfolioJson(Portfolio portfolio, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("InvestmentsP");
+        for (Object json: jsonArray) {
+            JSONObject nextInvestment = (JSONObject) json;
+            addInvestmentPortfolioJson(portfolio, nextInvestment);
+        }
+    }
+
 }

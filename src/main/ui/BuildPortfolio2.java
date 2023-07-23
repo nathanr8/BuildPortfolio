@@ -7,43 +7,33 @@ import persistence.Reader;
 import persistence.Writer;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 // Portfolio Builder application
-public class BuildPortfolio {
-    private Investment google;
-    private Investment blackrock;
-    private Investment tesla;
-    private Investment nextEra;
-    private Investment pfizer;
-    private Portfolio portfolioA;
-    private Portfolio portfolioB;
-    private ArrayList<Investment> investmentList;
-    private ArrayList<Portfolio> portfolioList;
+public class BuildPortfolio2 {
     private Scanner input;
     private Market myMarket;
 
-
-
-    private static final String JSON_STORAGE = "./data/buildPortfolio.json";
-    //private buildPortfolio;
+    private static final String JSON_STORAGE = "./data/market.json";
     private Writer jsonWriter;
     private Reader jsonReader;
 
     // EFFECTS: runs the portfolio builder application
-    public BuildPortfolio() throws FileNotFoundException {
+    public BuildPortfolio2() throws FileNotFoundException {
+        myMarket = new Market();
+        initInvestments();
+        initPortfolios();
+        input = new Scanner(System.in);
+        jsonWriter = new Writer(JSON_STORAGE);
+        jsonReader = new Reader(JSON_STORAGE);
         runBuilder();
     }
 
     // MODIFIES: this
     // EFFECTS: processes user input
     private void runBuilder() {
-        myMarket = new Market();
-        myMarket.addInitInvestments();
-        myMarket.addInitPortfolios();
-        initInvestments();
-        initPortfolios();
 
         boolean keepGoing = true;
         String command = null;
@@ -63,12 +53,7 @@ public class BuildPortfolio {
     // MODIFIES: this
     // EFFECTS: initializes investments
     private void initInvestments() {
-        google = new Investment("Google", 8.1F, "IT", 200);
-        blackrock = new Investment("Blackrock", 6.2F, "Financial", 150);
-        tesla = new Investment("Tesla", 12.2F, "Energy", 300);
-        nextEra = new Investment("NextEra", 7.2F, "Utilities", 50);
-        pfizer = new Investment("Pfizer", 5.7F, "Healthcare", 100);
-        //System.out.println();
+        myMarket.addInitInvestments();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
 
@@ -77,19 +62,7 @@ public class BuildPortfolio {
     // MODIFIES: this
     // EFFECTS: initializes portfolios
     private void initPortfolios() {
-        portfolioA = new Portfolio("PortfolioA", "IT", 10000);
-        portfolioA.addInvestments(google, 2);
-        portfolioA.addInvestments(blackrock, 2);
-        portfolioA.addInvestments(tesla, 2);
-        portfolioA.addInvestments(nextEra, 2);
-        portfolioA.addInvestments(pfizer, 2);
-
-        portfolioB = new Portfolio("PortfolioB", "Energy", 10000);
-        portfolioB.addInvestments(google, 2);
-        portfolioB.addInvestments(blackrock, 2);
-        portfolioB.addInvestments(tesla, 2);
-        portfolioB.addInvestments(nextEra, 2);
-        portfolioB.addInvestments(pfizer, 2);
+        myMarket.addInitPortfolios();
     }
 
     // EFFECTS: displays menu of options to user
@@ -99,6 +72,8 @@ public class BuildPortfolio {
         System.out.println("\ti -> View Investments");
         System.out.println("\ta -> New Portfolio");
         System.out.println("\tp -> View Portfolios");
+        System.out.println("\tz -> Save market to file");
+        System.out.println("\ty -> Load market from file");
         System.out.println("\tq -> quit");
     }
 
@@ -113,6 +88,10 @@ public class BuildPortfolio {
             newPortfolio();
         } else if (command.equals("p")) {
             viewPortfolios();
+        } else if (command.equals("z")) {
+            saveMarket();
+        } else if (command.equals("y")) {
+            loadMarket();
         } else {
             System.out.println("Selection not valid...");
         }
@@ -127,7 +106,7 @@ public class BuildPortfolio {
         System.out.println("\te -> Delete investment from portfolio");
         System.out.println("\tp -> View Portfolios");
         System.out.println("\ts -> View Portfolio's investments");
-        System.out.println("\tq -> quit");
+        System.out.println("\tq -> back");
     }
 
     // MODIFIES:this
@@ -154,7 +133,7 @@ public class BuildPortfolio {
     private void viewPortfoliosInvestments() {
         System.out.println("Enter name of portfolio to view it's investments:  ");
         String portfolioName = input.next();
-        Portfolio p = lookupPortfolioByName(portfolioName);
+        Portfolio p = myMarket.lookupPortfolioByName(portfolioName);
 
         System.out.printf("| %-10s | %-15s | %-20s | %-12s  |%n", "Name", "Purchase Price",
                 "Expected Return (%)", "Industry");
@@ -173,7 +152,7 @@ public class BuildPortfolio {
     private void deleteInvestmentFromPortfolio() {
         System.out.println("Portfolio name you would like to delete investment from?");
         String portfolioName = input.next();
-        Portfolio p = lookupPortfolioByName(portfolioName);
+        Portfolio p = myMarket.lookupPortfolioByName(portfolioName);
 
         System.out.println("Name of investment you would like to delete?");
         String investmentName = input.next();
@@ -181,7 +160,7 @@ public class BuildPortfolio {
         System.out.println("How many of these would you like to delete?");
         int quantity = Integer.parseInt(input.next());
 
-        Investment i = lookupInvestmentByName(investmentName);
+        Investment i = myMarket.lookupInvestmentByName(investmentName);
 
         p.removeInvestment(i, quantity);
 
@@ -194,7 +173,7 @@ public class BuildPortfolio {
     private void deletePortfolio() {
         System.out.println("Name of portfolio you would like to delete?");
         String portfolioName = input.next();
-        Portfolio port = lookupPortfolioByName(portfolioName);
+        Portfolio port = myMarket.lookupPortfolioByName(portfolioName);
         myMarket.deletePortfolio(port);
         viewPortfolios();
     }
@@ -208,12 +187,7 @@ public class BuildPortfolio {
                 "Expected Return (%)", "Strong Economic Sector", "Available Capital");
         System.out.printf("| %-104s |%n", "-------------------------------------------------------------------------"
                 + "--------------------------------");
-        for (Portfolio p : portfolioList) {
-            System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(),
-                    p.getPortfolioCapital(), p.calculateReturnAmountPercent(), p.getPreferredSector(),
-                    p.getAvailableCapital());
-        }
-
+        myMarket.viewPortfolios();
         boolean keepGoing2 = true;
         String command2 = null;
         while (keepGoing2) {
@@ -227,31 +201,25 @@ public class BuildPortfolio {
                 processCommand2(command2);
             }
         }
-
     }
+
+
 
     //REQUIRES: portfolioName is not already in use
     // MODIFIES: this
     // EFFECTS: creates a portfolio, adds it to portfolioList
     private void newPortfolio() {
-        Portfolio newPortfolio;
-        newPortfolio = new Portfolio(null, null, 1);
-
         System.out.print("Enter name of portfolio: ");
         String portfolioName = input.next();
-        newPortfolio.setPortfolioName(portfolioName);
 
         System.out.print("Enter the strong economic sector in this portfolio: ");
         String sector = input.next();
-        newPortfolio.setPreferredSector(sector);
 
         System.out.print("Enter the starting amount of capital in $: ");
         Integer capital = Integer.valueOf(input.next());
 
         if (capital > 1000) {
-            newPortfolio.setInitialCapital(capital);
-            newPortfolio.setAvailableCapital(capital);
-            portfolioList.add(newPortfolio);
+            myMarket.newPortfolio(portfolioName, sector, capital);
             System.out.println(" ");
             System.out.println("Portfolio successfully made!");
         } else {
@@ -264,7 +232,7 @@ public class BuildPortfolio {
     private void addInvestmentToPortfolio() {
         System.out.println("Portfolio name you would like to add investment to: ");
         String portfolioName = input.next();
-        Portfolio p = lookupPortfolioByName(portfolioName);
+        Portfolio p = myMarket.lookupPortfolioByName(portfolioName);
 
         System.out.println("Name of investment you would like to add: ");
         String investmentName = input.next();
@@ -272,7 +240,7 @@ public class BuildPortfolio {
         System.out.println("How many of these would you like to purchase: ");
         int quantity = Integer.parseInt(input.next());
 
-        Investment i = lookupInvestmentByName(investmentName);
+        Investment i = myMarket.lookupInvestmentByName(investmentName);
 
         p.addInvestments(i, quantity);
 
@@ -285,37 +253,30 @@ public class BuildPortfolio {
         System.out.println("Currently available investments in the market: ");
         System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", "Name", "Price", "Expected Return (%)", "Industry");
         System.out.printf("| %-54s |%n", "---------------------------------------------------------");
-        for (Investment i : investmentList) {
-            System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", i.getInvestmentname(), i.getPrice(),
-                    i.getReturnPercentage(), i.getSector());
-        }
+        myMarket.viewInvestments();
     }
 
     //REQUIRES: investmentName is not already in market
     // MODIFIES: this
     // EFFECTS: creates an investment, adds it to investmentList
     private void newInvestment() {
-        Investment newInvestment;
-        newInvestment = new Investment(null, 0F, null, 1);
-
         System.out.print("Enter name of investment: ");
         String investmentName = input.next();
-        newInvestment.setInvestmentname(investmentName);
+
 
         System.out.print("Enter expected return in a percentage: ");
         float investmentPercent = Float.parseFloat(input.next());
-        newInvestment.setReturnPercentage(investmentPercent);
+
 
         System.out.print("Enter the economic sector: ");
         String investmentSector = input.next();
-        newInvestment.setSector(investmentSector);
+
 
         System.out.print("Enter the initial purchase price: ");
         Integer investmentPrice = Integer.valueOf(input.next());
 
         if (investmentPrice > 0) {
-            newInvestment.setPrice(investmentPrice);
-            investmentList.add(newInvestment);
+            myMarket.newInvestment(investmentName, investmentPercent, investmentSector, investmentPrice);
             System.out.println(" ");
             System.out.println("Investment added successfully");
         } else {
@@ -323,28 +284,29 @@ public class BuildPortfolio {
         }
     }
 
-    // REQUIRES: investmentName is the name of an existing Investment
-    // EFFECTS: returns Investment object that has name investmentName
-    public Investment lookupInvestmentByName(String investmentName) {
-        Investment inv = null;
-        for (Investment i : investmentList) {
-            if (i.getInvestmentname().equalsIgnoreCase(investmentName)) {
-                inv = i;
-            }
+
+    // EFFECTS: saves the market to file
+    private void saveMarket() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(myMarket);
+            jsonWriter.close();
+            System.out.println("Saved " + "market" + " to " + JSON_STORAGE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORAGE);
         }
-        return inv;
     }
 
-    // REQUIRES: portfolioName is the name of an existing portfolio
-    // EFFECTS: returns portfolio that has name portfolioName
-    public Portfolio lookupPortfolioByName(String portfolioName) {
-        Portfolio port = null;
-        for (Portfolio p : portfolioList) {
-            if (p.getPortfolioName().toLowerCase().equals(portfolioName.toLowerCase())) {
-                port = p;
-            }
+    // MODIFIES: this
+    // EFFECTS: loads market from file
+    private void loadMarket() {
+        try {
+            myMarket = jsonReader.read();
+            System.out.println("Loaded " + "market" + " from " + JSON_STORAGE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORAGE);
         }
-        return port;
     }
 
 }
+
