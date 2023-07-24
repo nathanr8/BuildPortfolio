@@ -1,7 +1,6 @@
 package persistence;
 
-import model.Investment;
-import model.Portfolio;
+
 import model.Market;
 
 import org.json.JSONObject;
@@ -36,11 +35,6 @@ public class Writer {
         JSONObject json = market.toJson();
         saveToFile(json.toString(TAB));
     }
-
-//    public void writeP(Portfolio portfolio) {
-//        JSONObject json = portfolio.toJson();
-//        saveToFile(json.toString(TAB));
-//    }
 
     // MODIFIES: this
     // EFFECTS: closes writer
