@@ -63,18 +63,19 @@ public class Market implements Writable {
     // EFFECTS: initializes portfolios, adds them to market
     public void addInitPortfolios() {
         portfolioA = new Portfolio("PortfolioA", "IT", 10000);
-        portfolioA.addInvestments(google, 2);
-        portfolioA.addInvestments(blackrock, 2);
-        portfolioA.addInvestments(tesla, 2);
-        portfolioA.addInvestments(nextEra, 2);
-        portfolioA.addInvestments(pfizer, 2);
+//        portfolioA.addInvestments(google, 2);
+//        portfolioA.addInvestments(blackrock, 2);
+//        portfolioA.addInvestments(tesla, 2);
+//        portfolioA.addInvestments(nextEra, 2);
+//        portfolioA.addInvestments(pfizer, 2);
+
 
         portfolioB = new Portfolio("PortfolioB", "Energy", 10000);
-        portfolioB.addInvestments(google, 2);
-        portfolioB.addInvestments(blackrock, 2);
-        portfolioB.addInvestments(tesla, 2);
-        portfolioB.addInvestments(nextEra, 2);
-        portfolioB.addInvestments(pfizer, 2);
+//        portfolioB.addInvestments(google, 2);
+//        portfolioB.addInvestments(blackrock, 2);
+//        portfolioB.addInvestments(tesla, 2);
+//        portfolioB.addInvestments(nextEra, 2);
+//        portfolioB.addInvestments(pfizer, 2);
         portfolioList.add(portfolioA);
         portfolioList.add(portfolioB);
 
@@ -87,22 +88,22 @@ public class Market implements Writable {
         portfolioList.remove(portfolioName);
     }
 
-    // EFFECTS: displays all portfolios currently made
-    public void viewPortfolios() {
-        for (Portfolio p : portfolioList) {
-            System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(),
-                    p.getPortfolioCapital(), p.calculateReturnAmountPercent(), p.getPreferredSector(),
-                    p.getAvailableCapital());
-        }
-    }
+//    // EFFECTS: displays all portfolios currently made
+//    public void viewPortfolios() {
+//        for (Portfolio p : portfolioList) {
+//            System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(),
+//                    p.getPortfolioCapital(), p.calculateReturnAmountPercent(), p.getPreferredSector(),
+//                    p.getAvailableCapital());
+//        }
+//    }
 
-    // EFFECTS: displays all investments available in the market
-    public void viewInvestments() {
-        for (Investment i : investmentList) {
-            System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", i.getInvestmentname(), i.getPrice(),
-                    i.getReturnPercentage(), i.getSector());
-        }
-    }
+//    // EFFECTS: displays all investments available in the market
+//    public void viewInvestments() {
+//        for (Investment i : investmentList) {
+//            System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", i.getInvestmentname(), i.getPrice(),
+//                    i.getReturnPercentage(), i.getSector());
+//        }
+//    }
 
     // REQUIRES: portfolioName is the name of an existing portfolio
     // EFFECTS: returns portfolio that has name portfolioName

@@ -179,6 +179,31 @@ public class BuildPortfolio2 {
     }
 
 
+//    // EFFECTS: displays all portfolios currently made
+//    private void viewPortfolios() {
+//        System.out.println("Currently available portfolios: ");
+//
+//        System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s | %n", "Name", "Capital Invested ($)",
+//                "Expected Return (%)", "Strong Economic Sector", "Available Capital");
+//        System.out.printf("| %-104s |%n", "-------------------------------------------------------------------------"
+//                + "--------------------------------");
+//        myMarket.viewPortfolios();
+//
+//        boolean keepGoing2 = true;
+//        String command2 = null;
+//        while (keepGoing2) {
+//            portfolioDisplayMenu();
+//            command2 = input.next();
+//            command2 = command2.toLowerCase();
+//
+//            if (command2.equals("q")) {
+//                keepGoing2 = false;
+//            } else {
+//                processCommand2(command2);
+//            }
+//        }
+//    }
+
     // EFFECTS: displays all portfolios currently made
     private void viewPortfolios() {
         System.out.println("Currently available portfolios: ");
@@ -187,7 +212,11 @@ public class BuildPortfolio2 {
                 "Expected Return (%)", "Strong Economic Sector", "Available Capital");
         System.out.printf("| %-104s |%n", "-------------------------------------------------------------------------"
                 + "--------------------------------");
-        myMarket.viewPortfolios();
+        for (Portfolio p : myMarket.getPortfolioList()) {
+            System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(),
+                    p.getPortfolioCapital(), p.calculateReturnAmountPercent(), p.getPreferredSector(),
+                    p.getAvailableCapital());
+        }
         boolean keepGoing2 = true;
         String command2 = null;
         while (keepGoing2) {
@@ -248,13 +277,26 @@ public class BuildPortfolio2 {
     }
 
 
+//    // EFFECTS: displays all investments available in the market
+//    private void viewInvestments() {
+//        System.out.println("Currently available investments in the market: ");
+//        System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", "Name", "Price", "Expected Return (%)", "Industry");
+//        System.out.printf("| %-54s |%n", "---------------------------------------------------------");
+//        myMarket.viewInvestments();
+//    }
+
     // EFFECTS: displays all investments available in the market
     private void viewInvestments() {
         System.out.println("Currently available investments in the market: ");
         System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", "Name", "Price", "Expected Return (%)", "Industry");
         System.out.printf("| %-54s |%n", "---------------------------------------------------------");
-        myMarket.viewInvestments();
+        // EFFECTS: displays all investments available in the market
+        for (Investment i : myMarket.getInvestmentList()) {
+            System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", i.getInvestmentname(), i.getPrice(),
+                    i.getReturnPercentage(), i.getSector());
+        }
     }
+
 
     //REQUIRES: investmentName is not already in market
     // MODIFIES: this

@@ -44,67 +44,6 @@ public class WriterTest extends JsonTest {
         }
     }
 
-//    @SuppressWarnings("checkstyle:MethodLength")
-//    @Test
-//    void testWriterWithFilledMarket() {
-//        try {
-//            Market testMarket = new Market();
-//            Portfolio testPortfolio = new Portfolio("NAME1", "IT", 5000);
-//            Portfolio testPortfolio2 = new Portfolio("NAME2", "ENERGY", 4000);
-//            Portfolio testPortfolio3 = new Portfolio("NAME3", "FINANCE", 3000);
-//
-//            Investment testInvestment = new Investment("TNAME", 12.2F, "IT",
-//                    50);
-//            Investment testInvestment2 = new Investment("TNAME2", 6.5F, "ENERGY",
-//                    40);
-//            Investment testInvestment3 = new Investment("TNAME3", 12.8F, "FINANCE",
-//                    30);
-//
-//            testMarket.addInvestment(testInvestment);
-//            testMarket.addInvestment(testInvestment2);
-//            testMarket.addInvestment(testInvestment3);
-//
-//            testMarket.addPortfolio(testPortfolio);
-//            testMarket.addPortfolio(testPortfolio2);
-//            testMarket.addPortfolio(testPortfolio3);
-//
-//
-//            // Write it first
-//            Writer writer = new Writer("./data/testWriterWithFilledMarket.json");
-//            writer.open();
-//            writer.write(testMarket);
-//            writer.close();
-//
-//            // Then, read it to test if it is correct
-//            Reader reader = new Reader("./data/testWriterWithFilledMarket.json");
-//
-//            testMarket = reader.read();
-//            assertEquals(3, testMarket.getInvestmentList().size());
-//            assertEquals(3, testMarket.getPortfolioList().size());
-//
-//            checkInvestment("TNAME", 12.2F, "IT", 50,
-//                    testMarket.getInvestmentList().get(0));
-//
-//            checkInvestment("TNAME2", 6.5F, "ENERGY", 40,
-//                    testMarket.getInvestmentList().get(1));
-//
-//            checkInvestment("TNAME3", 12.8F, "FINANCE", 30,
-//                    testMarket.getInvestmentList().get(2));
-//
-//            checkPortfolio("NAME1", "IT", 5000,
-//                    testMarket.getPortfolioList().get(0));
-//
-//            checkPortfolio("NAME2", "ENERGY", 4000,
-//                    testMarket.getPortfolioList().get(1));
-//
-//            checkPortfolio("NAME3", "FINANCE", 3000,
-//                    testMarket.getPortfolioList().get(2));
-//
-//        } catch (IOException e) {
-//            fail("We could not write to the file and the IOException was thrown");
-//        }
-//    }
-
     @Test
     void testWriterWithFilledMarket() {
         try {

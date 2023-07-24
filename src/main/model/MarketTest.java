@@ -20,11 +20,6 @@ public class MarketTest {
     private Investment testInvestment;
     private Investment testInvestment2;
     private Investment testInvestment3;
-    private Investment google;
-    private Investment blackrock;
-    private Investment tesla;
-    private Investment nextEra;
-    private Investment pfizer;
 
 
     @BeforeEach
@@ -67,11 +62,6 @@ public class MarketTest {
 
     @Test
     void testAddInitPortfolios() {
-        google = new Investment("Google", 8.1F, "IT", 200);
-        blackrock = new Investment("Blackrock", 6.2F, "Financial", 150);
-        tesla = new Investment("Tesla", 12.2F, "Energy", 300);
-        nextEra = new Investment("NextEra", 7.2F, "Utilities", 50);
-        pfizer = new Investment("Pfizer", 5.7F, "Healthcare", 100);
         testMarket.addInitPortfolios();
         assertEquals(2, testMarket.getPortfolioList().size());
     }
@@ -160,30 +150,5 @@ public class MarketTest {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
