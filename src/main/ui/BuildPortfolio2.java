@@ -250,15 +250,6 @@ public class BuildPortfolio2 {
         viewPortfolios();
     }
 
-
-//    // EFFECTS: displays all investments available in the market
-//    private void viewInvestments() {
-//        System.out.println("Currently available investments in the market: ");
-//        System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", "Name", "Price", "Expected Return (%)", "Industry");
-//        System.out.printf("| %-54s |%n", "---------------------------------------------------------");
-//        myMarket.viewInvestments();
-//    }
-
     // EFFECTS: displays all investments available in the market
     private void viewInvestments() {
         System.out.println("Currently available investments in the market: ");

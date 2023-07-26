@@ -65,6 +65,7 @@ public class Investment implements Writable {
         this.price = price;
     }
 
+    // EFFECTS: Writes an investment to JSON data
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

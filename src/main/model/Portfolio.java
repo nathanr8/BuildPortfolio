@@ -113,20 +113,20 @@ public class Portfolio implements Writable {
         double i = 0.0;
         for (Investment inv : investments) {
             Investment temp = investmentMap.get(inv.getInvestmentname());
-            if (temp != null) {
-                if (temp.getSector().equals(this.getPreferredSector())) {
-                    float j = temp.getReturnPercentage();
-                    double percent = j / 100;
-                    i += (temp.getPrice() * percent * strongSectorBonus);
-                } else {
-                    float k = temp.getReturnPercentage();
-                    double percent = k / 100;
-                    i += (temp.getPrice() * percent);
-                }
+            if (temp.getSector().equals(this.getPreferredSector())) {
+                float j = temp.getReturnPercentage();
+                double percent = j / 100;
+                i += (temp.getPrice() * percent * strongSectorBonus);
+            } else {
+                float k = temp.getReturnPercentage();
+                double percent = k / 100;
+                i += (temp.getPrice() * percent);
             }
         }
         return Math.round(i * 100) / 100.0;
     }
+
+
 
     //EFFECTS: calculates return % for portfolio
     public String calculateReturnAmountPercent() {
@@ -145,6 +145,7 @@ public class Portfolio implements Writable {
         availableCapital = availableCapital + (i.getPrice() * quantity);
     }
 
+    // Writes a portfolio to JSON data
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

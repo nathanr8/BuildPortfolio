@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+// Represents a market with investments and portfolios
 public class Market implements Writable {
     private Investment google;
     private Investment blackrock;
@@ -19,12 +20,13 @@ public class Market implements Writable {
     private ArrayList<Portfolio> portfolioList;
 
     // Constructor
-    // EFFECTS: Constructs a market with initial investments and portfolios
+    // EFFECTS: Constructs a market with initial investments and portfolios empty
     public Market() {
         investmentList = new ArrayList<>();
         portfolioList = new ArrayList<>();
     }
 
+    //GETTERS
     public ArrayList<Investment> getInvestmentList() {
         return this.investmentList;
     }
@@ -34,17 +36,23 @@ public class Market implements Writable {
     }
 
 
+    //REQUIRES: portfolio exits
+    //MODIFIES: this
+    //EFFECTS: adds a portfolio to the market's portfolio list
     public void addPortfolio(Portfolio portfolio) {
         portfolioList.add(portfolio);
     }
 
+    //REQUIRES: investment exits
+    //MODIFIES: this
+    //EFFECTS: adds an investment to the market's investment list
     public void addInvestment(Investment investment) {
         investmentList.add(investment);
     }
 
 
     // MODIFIES: this
-    // EFFECTS: initializes investments, adds them to market
+    // EFFECTS: initializes investments, adds them to market to have starting investments to use
     public void addInitInvestments() {
         google = new Investment("Google", 8.1F, "IT", 200);
         blackrock = new Investment("Blackrock", 6.2F, "Financial", 150);
@@ -60,7 +68,7 @@ public class Market implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: initializes portfolios, adds them to market
+    // EFFECTS: initializes portfolios, adds them to market to have starting portfolios to use
     public void addInitPortfolios() {
         portfolioA = new Portfolio("PortfolioA", "IT", 10000);
 //        portfolioA.addInvestments(google, 2);
@@ -78,32 +86,14 @@ public class Market implements Writable {
 //        portfolioB.addInvestments(pfizer, 2);
         portfolioList.add(portfolioA);
         portfolioList.add(portfolioB);
-
     }
 
-    //REQUIRES: portfolio is already constructed
+    //REQUIRES: portfolio already in portfolio list
     //MODIFIES: this
     //EFFECTS: removes portfolio from portfolioList
     public void deletePortfolio(Portfolio portfolioName) {
         portfolioList.remove(portfolioName);
     }
-
-//    // EFFECTS: displays all portfolios currently made
-//    public void viewPortfolios() {
-//        for (Portfolio p : portfolioList) {
-//            System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s |%n", p.getPortfolioName(),
-//                    p.getPortfolioCapital(), p.calculateReturnAmountPercent(), p.getPreferredSector(),
-//                    p.getAvailableCapital());
-//        }
-//    }
-
-//    // EFFECTS: displays all investments available in the market
-//    public void viewInvestments() {
-//        for (Investment i : investmentList) {
-//            System.out.printf("| %-10s | %-6s | %-20s | %-12s |%n", i.getInvestmentname(), i.getPrice(),
-//                    i.getReturnPercentage(), i.getSector());
-//        }
-//    }
 
     // REQUIRES: portfolioName is the name of an existing portfolio
     // EFFECTS: returns portfolio that has name portfolioName
@@ -181,7 +171,5 @@ public class Market implements Writable {
 
         return jsonArray;
     }
-
-
 
 }

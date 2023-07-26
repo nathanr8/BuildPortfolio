@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import org.json.*;
 
 
-// This class represents a reader that reads the portfolios and investments from JSON data stored in files
+// This class represents a reader that reads the market, portfolio and investments from JSON data stored in files
 public class Reader {
     private String source;
 
@@ -23,7 +23,7 @@ public class Reader {
         this.source = source;
     }
 
-    // EFFECTS: reads portfolio from file and returns it;
+    // EFFECTS: reads market from file and returns it;
     // throws the IOException if an error occurs reading data from file
     public Market read() throws IOException {
         String jsonData = readFile(source);
@@ -42,18 +42,13 @@ public class Reader {
     }
 
 
+    // EFFECTS: parses market from JSON object and returns it
     private Market parseMarket(JSONObject jsonObject) {
         Market market = new Market();
         addMultipleInvestmentJson(market, jsonObject);
         addMultiplePortfolioJson(market, jsonObject);
         return market;
     }
-
-//    private Portfolio parsePortfolio(JSONObject jsonObject) {
-//        Portfolio portfolio = new Portfolio(null, null, 1000);
-//        addMultipleInvestmentToPortfolioJson(portfolio, jsonObject);
-//        return portfolio;
-//    }
 
     // MODIFIES: market
     // EFFECTS: parses multiple investments from JSON object and adds them to market
@@ -115,7 +110,7 @@ public class Reader {
         portfolio.addInvestments(investment, 1);
     }
 
-    // MODIFIES: market
+    // MODIFIES: portfolio
     // EFFECTS: parses multiple investments from JSON object and adds them to portfolio
     private void addMultipleInvestmentToPortfolioJson(Portfolio portfolio, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("InvestmentsP");
