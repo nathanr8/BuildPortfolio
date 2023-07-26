@@ -159,7 +159,7 @@ public class PortfolioTest {
     void testCalculatePortfolioReturnDollarWithSector() {
         testPortfolio.addInvestments(testInvestment, 5);
         double i = testPortfolio.calculateReturnAmountDollar();
-        assertEquals(29.0, i);
+        assertEquals(26.25, i);
 
     }
 
@@ -167,7 +167,7 @@ public class PortfolioTest {
     void testCalculatePortfolioReturnDollarWithoutSector() {
         testPortfolio.addInvestments(testInvestment3, 5);
         double i = testPortfolio.calculateReturnAmountDollar();
-        assertEquals(25.0, i);
+        assertEquals(25.00, i);
 
     }
 
@@ -176,7 +176,7 @@ public class PortfolioTest {
         testPortfolio.addInvestments(testInvestment, 5);
         testPortfolio.addInvestments(testInvestment2, 16);
         double i = testPortfolio.calculateReturnAmountDollar();
-        assertEquals(33.00, i);
+        assertEquals(30.73, i);
 
     }
 
@@ -185,7 +185,7 @@ public class PortfolioTest {
         testPortfolio.addInvestments(testInvestment3, 5);
         testPortfolio.addInvestments(testInvestment2, 16);
         double i = testPortfolio.calculateReturnAmountDollar();
-        assertEquals(29.00, i);
+        assertEquals(29.48, i);
 
     }
 
@@ -202,7 +202,14 @@ public class PortfolioTest {
     void testCalculatePortfolioReturnPercent() {
         testPortfolio.addInvestments(testInvestment, 5);
         String j = testPortfolio.calculateReturnAmountPercent();
-        assertEquals("11.60", j);
+        assertEquals("10.50", j);
+    }
+
+    @Test
+    void testCalculatePortfolioReturnPercent2() {
+        testPortfolio.addInvestments(testInvestment3, 5);
+        String j = testPortfolio.calculateReturnAmountPercent();
+        assertEquals("10.00", j);
     }
 
     @Test
@@ -210,7 +217,7 @@ public class PortfolioTest {
         testPortfolio.addInvestments(testInvestment, 5);
         testPortfolio.addInvestments(testInvestment2, 16);
         String j = testPortfolio.calculateReturnAmountPercent();
-        assertEquals("4.73", j);
+        assertEquals("4.40", j);
     }
 
     @Test
@@ -218,6 +225,6 @@ public class PortfolioTest {
         testPortfolio.addInvestments(testInvestment3, 5);
         testPortfolio.addInvestments(testInvestment2, 16);
         String j = testPortfolio.calculateReturnAmountPercent();
-        assertEquals("4.15", j);
+        assertEquals("4.22", j);
     }
 }

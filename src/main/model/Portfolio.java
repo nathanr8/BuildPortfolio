@@ -5,9 +5,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.text.DecimalFormat;
-
+import java.util.HashMap;
 
 
 // Represents an investment portfolio one can add investments to
@@ -20,6 +21,7 @@ public class Portfolio implements Writable {
     private int portfolioCapital;
     private static final DecimalFormat df = new DecimalFormat("0.00");
     private float strongSectorBonus;
+    private HashMap<String, Investment> investmentMap;
 
 
     //REQUIRES: initialCapital >= 1000
@@ -32,6 +34,7 @@ public class Portfolio implements Writable {
         this.investments = new ArrayList<>();
         this.portfolioCapital = 0;
         this.strongSectorBonus = 1.05F;
+        this.investmentMap = new HashMap<>();
     }
 
     // getters
@@ -96,6 +99,7 @@ public class Portfolio implements Writable {
         if ((i.getPrice() * quantity) <= this.availableCapital) {
             for (int n = 0; n < quantity; n++) {
                 this.investments.add(i);
+                investmentMap.put(i.getInvestmentname(), i);
             }
             this.availableCapital = availableCapital - (i.getPrice() * quantity);
             return "Investment added successfully!";
@@ -106,16 +110,22 @@ public class Portfolio implements Writable {
 
     //EFFECTS: calculates $ amount return for portfolio
     public double calculateReturnAmountDollar() {
-        double i = 0.0F;
-        for (Investment inv: this.investments) {
-            if (inv.getSector() == this.getPreferredSector()) {
-                float j = strongSectorBonus * inv.getReturnPercentage();
-                inv.setReturnPercentage(j);
+        double i = 0.0;
+        for (Investment inv : investments) {
+            Investment temp = investmentMap.get(inv.getInvestmentname());
+            if (temp != null) {
+                if (temp.getSector().equals(this.getPreferredSector())) {
+                    float j = temp.getReturnPercentage();
+                    double percent = j / 100;
+                    i += (temp.getPrice() * percent * strongSectorBonus);
+                } else {
+                    float k = temp.getReturnPercentage();
+                    double percent = k / 100;
+                    i += (temp.getPrice() * percent);
+                }
             }
-            double percent = inv.getReturnPercentage() / 100;
-            i += (inv.getPrice() * percent);
         }
-        return (double) Math.round(i);
+        return Math.round(i * 100) / 100.0;
     }
 
     //EFFECTS: calculates return % for portfolio

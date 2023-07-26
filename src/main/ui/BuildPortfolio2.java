@@ -178,32 +178,6 @@ public class BuildPortfolio2 {
         viewPortfolios();
     }
 
-
-//    // EFFECTS: displays all portfolios currently made
-//    private void viewPortfolios() {
-//        System.out.println("Currently available portfolios: ");
-//
-//        System.out.printf("| %-10s | %-20s | %-20s | %-25s | %-18s | %n", "Name", "Capital Invested ($)",
-//                "Expected Return (%)", "Strong Economic Sector", "Available Capital");
-//        System.out.printf("| %-104s |%n", "-------------------------------------------------------------------------"
-//                + "--------------------------------");
-//        myMarket.viewPortfolios();
-//
-//        boolean keepGoing2 = true;
-//        String command2 = null;
-//        while (keepGoing2) {
-//            portfolioDisplayMenu();
-//            command2 = input.next();
-//            command2 = command2.toLowerCase();
-//
-//            if (command2.equals("q")) {
-//                keepGoing2 = false;
-//            } else {
-//                processCommand2(command2);
-//            }
-//        }
-//    }
-
     // EFFECTS: displays all portfolios currently made
     private void viewPortfolios() {
         System.out.println("Currently available portfolios: ");
