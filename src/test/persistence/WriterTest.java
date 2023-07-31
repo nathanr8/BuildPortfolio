@@ -71,6 +71,45 @@ public class WriterTest extends JsonTest {
         }
     }
 
+    @Test
+    void testWriterWithFilledMarketDeleteInvestment() {
+        try {
+            Market testMarket = new Market();
+            Portfolio testPortfolio = new Portfolio("NAME1", "IT", 5000);
+            Investment testInvestment = new Investment("TNAME", 12.2F, "IT", 50);
+            testMarket.addInvestment(testInvestment);
+            testMarket.addPortfolio(testPortfolio);
+            testPortfolio.addInvestments(testInvestment, 1);
+            Writer writer = new Writer("./data/testWriterWithFilledMarket.json");
+            writer.open();
+            writer.write(testMarket);
+            writer.close();
+            Reader reader = new Reader("./data/testWriterWithFilledMarket.json");
+            testMarket = reader.read();
+            assertEquals(1, testMarket.getInvestmentList().size());
+            assertEquals(1, testMarket.getPortfolioList().size());
+            assertEquals(1, testPortfolio.getInvestments().size());
+            checkInvestment("TNAME", 12.2F, "IT", 50,
+                    testMarket.getInvestmentList().get(0));
+            checkPortfolio("NAME1", "IT", 5000,
+                    testMarket.getPortfolioList().get(0));
+
+            testPortfolio.removeInvestment(testInvestment, 1);
+            Writer writer2 = new Writer("./data/testWriterWithFilledMarket2.json");
+            writer2.open();
+            writer2.write(testMarket);
+            writer2.close();
+            Reader reader2 = new Reader("./data/testWriterWithFilledMarket2.json");
+            testMarket = reader2.read();
+            assertEquals(1, testMarket.getInvestmentList().size());
+            assertEquals(1, testMarket.getPortfolioList().size());
+            assertEquals(0, testPortfolio.getInvestments().size());
+
+        } catch (IOException e) {
+            fail("We could not write to the file and the IOException was thrown");
+        }
+    }
+
 
 
 
