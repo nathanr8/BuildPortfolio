@@ -3,6 +3,8 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.Objects;
+
 // Represents an investment in the market one can too to an investment portfolio
 public class Investment implements Writable {
     private String investmentname;
@@ -74,6 +76,39 @@ public class Investment implements Writable {
         json.put("Return %", returnPercentage);
         json.put("Price", price);
         return json;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Investment)) {
+            return false;
+        }
+
+        Investment that = (Investment) o;
+
+        if (Float.compare(that.returnPercentage, returnPercentage) != 0) {
+            return false;
+        }
+        if (price != that.price) {
+            return false;
+        }
+        if (!Objects.equals(investmentname, that.investmentname)) {
+            return false;
+        }
+        return Objects.equals(sector, that.sector);
+    }
+
+
+    @Override
+    public int hashCode() {
+        int result = investmentname != null ? investmentname.hashCode() : 0;
+        result = 31 * result + (returnPercentage != +0.0f ? Float.floatToIntBits(returnPercentage) : 0);
+        result = 31 * result + (sector != null ? sector.hashCode() : 0);
+        result = 31 * result + price;
+        return result;
     }
 }
 
