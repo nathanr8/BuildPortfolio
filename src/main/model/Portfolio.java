@@ -14,14 +14,14 @@ import java.util.HashMap;
 // Represents an investment portfolio one can add investments to
 public class Portfolio implements Writable {
     private String portfolioName;
-    private ArrayList<Investment> investments;
+    private final ArrayList<Investment> investments;
     private String preferredSector;
     private int initialCapital;
     private int availableCapital;
-    private int portfolioCapital;
+    private final int portfolioCapital;
     private static final DecimalFormat df = new DecimalFormat("0.00");
-    private float strongSectorBonus;
-    private HashMap<String, Investment> investmentMap;
+    private final float strongSectorBonus;
+    private final HashMap<String, Investment> investmentMap;
 
 
     //REQUIRES: initialCapital >= 1000
@@ -167,4 +167,25 @@ public class Portfolio implements Writable {
 
         return jsonArray;
     }
+
+
+    public String getInvestmentNames() {
+        StringBuilder investmentNames = new StringBuilder();
+
+        for (Investment investment : investments) { // assuming investments is your list of Investment objects
+            investmentNames.append(investment.getInvestmentname()).append(", ");
+        }
+
+        // Remove trailing comma and space
+        if (investmentNames.length() > 0) {
+            investmentNames.setLength(investmentNames.length() - 2);
+        }
+
+        return investmentNames.toString();
+    }
+
+
+
+
+
 }

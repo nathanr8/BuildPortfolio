@@ -17,8 +17,8 @@ public class BuildPortfolio2 {
     private Market myMarket;
 
     private static final String JSON_STORAGE = "./data/market.json";
-    private Writer jsonWriter;
-    private Reader jsonReader;
+    private final Writer jsonWriter;
+    private final Reader jsonReader;
 
     // EFFECTS: runs the portfolio builder application
     public BuildPortfolio2() throws FileNotFoundException {

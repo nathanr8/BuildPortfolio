@@ -16,14 +16,17 @@ public class Market implements Writable {
     private Investment pfizer;
     private Portfolio portfolioA;
     private Portfolio portfolioB;
-    private ArrayList<Investment> investmentList;
-    private ArrayList<Portfolio> portfolioList;
+    private final ArrayList<Investment> investmentList;
+    private final ArrayList<Portfolio> portfolioList;
 
     // Constructor
     // EFFECTS: Constructs a market with initial investments and portfolios empty
     public Market() {
         investmentList = new ArrayList<>();
         portfolioList = new ArrayList<>();
+//        addInitPortfolios();
+//        addInitInvestments();
+
     }
 
     //GETTERS
@@ -100,7 +103,7 @@ public class Market implements Writable {
     public Portfolio lookupPortfolioByName(String portfolioName) {
         Portfolio port = null;
         for (Portfolio p : portfolioList) {
-            if (p.getPortfolioName().toLowerCase().equals(portfolioName.toLowerCase())) {
+            if (p.getPortfolioName().equalsIgnoreCase(portfolioName)) {
                 port = p;
             }
         }
@@ -112,7 +115,7 @@ public class Market implements Writable {
     public Investment lookupInvestmentByName(String investmentName) {
         Investment inv = null;
         for (Investment i : investmentList) {
-            if (i.getInvestmentname().toLowerCase().equals(investmentName.toLowerCase())) {
+            if (i.getInvestmentname().equalsIgnoreCase(investmentName)) {
                 inv = i;
             }
         }

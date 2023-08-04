@@ -16,7 +16,7 @@ import org.json.*;
 
 // This class represents a reader that reads the market, portfolio and investments from JSON data stored in files
 public class Reader {
-    private String source;
+    private final String source;
 
     // EFFECTS: constructs a reader to read from source files
     public Reader(String source) {
@@ -119,5 +119,6 @@ public class Reader {
             addInvestmentPortfolioJson(portfolio, nextInvestment);
         }
     }
+
 
 }
