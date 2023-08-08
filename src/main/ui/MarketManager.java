@@ -7,12 +7,16 @@ import persistence.Writer;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+
+// Controls how the GUI interacts with market object, including saving and writing
 public class MarketManager {
     protected Market myMarket;
     protected String file = "./data/market.json";
     protected Writer jsonWriter;
     protected Reader jsonReader;
 
+    //CONSTRUCTOR
+    //EFFECTS: creates new MarketManager with new market and reader/writer
     public MarketManager() {
         myMarket = new Market();
         jsonWriter = new Writer(file);
@@ -20,14 +24,14 @@ public class MarketManager {
 
     }
 
-    // returns the market object
+    //GETTER
     public Market getMarket() {
         return myMarket;
     }
 
     // MODIFIES: this
-    //  EFFECTS: Creates new Writer Object and Writes current market Object to savefile
-    // Saves all market objects at that instance and overwrites old Save File
+    // EFFECTS: Saves all market objects at that instance and overwrites old Save File
+    //          throws IOException if unable to save
     public void save() throws IOException {
         try {
             jsonWriter.open();
@@ -39,24 +43,17 @@ public class MarketManager {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Loads all market objects instance into new Market object
+    //          throws IOException if unable to load and creates new Market if loading fails
     public void load() throws IOException {
         try {
             myMarket = jsonReader.read();
             System.out.println("Loaded " + "market" + " from " + file);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + file);
-            myMarket = new Market();  // Initialize a new Market if reading fails
+            myMarket = new Market();
         }
-    }
-
-
-    public void load(String str) throws IOException {
-        Reader reader = new Reader(str);
-        myMarket = reader.read();
-    }
-
-    public void userRequestReload() throws IOException {
-        load();
     }
 
 }

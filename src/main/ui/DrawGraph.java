@@ -8,68 +8,106 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.swing.*;
 
-public class DrawGraph extends JPanel {
-    private static final int MAX_SCORE = 30;
-    private static final int PREF_W = 500;
-    private static final int PREF_H = 300;
-    private static final int BORDER_GAP = 10;
-    private static final Color GRAPH_COLOR = Color.red;
-    private static final Color GRAPH_POINT_COLOR = new Color(150, 50, 50, 180);
-    private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
-    private static final int GRAPH_POINT_WIDTH = 3;
-    private static final int Y_HATCH_CNT = 2;
-    private final java.util.List<Double> scores;
+//CITATION; PART OF CODE INSPIRED FROM THE FOLLOWING:
+// https://stackoverflow.com/questions/8693342/drawing-a-simple-line-graph-in-java
+// https://stackoverflow.com/questions/29708147/custom-graph-java-swing
+// https://stackoverflow.com/questions/47366122/counter-and-accumulator-in-a-java-loop
 
-    public DrawGraph(java.util.List<Double> scores) {
-        this.scores = scores;
+// Displays interest return over time graph for the given portfolio
+public class DrawGraph extends JPanel {
+    private double maxScore;
+    protected static final int initialWidth = 500;
+    protected static final int initialHeight = 300;
+    protected static final int borderGap = 80;
+    protected static final Color graphColour = Color.red;
+    protected static final Color pointColour = Color.red;
+    protected static final Stroke graphStroke = new BasicStroke(2f);
+    protected static final int pointWidth = 3;
+    protected static final int yHatch = 2;
+    protected final java.util.List<Double> initialCapital;
+    protected static Double returnPercentage;
+    protected String yaxislabel;
+    protected String xaxisLabel;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
+
+    //CONSTRUCTOR
+    //EFFECTS: constructs a new DrawGraph using the
+    public DrawGraph(java.util.List<Double> initialCapital, Double returnPercentage) {
+        this.initialCapital = initialCapital;
+        this.returnPercentage = returnPercentage;
+        this.maxScore = (calculateCompoundInterest(initialCapital.get(1), returnPercentage, 48));
     }
 
-    @Override
+    //GETTERS
+    public List<Double> getScores(DrawGraph drawGraph) {
+        return this.initialCapital;
+    }
+
+    public Double getAmount(DrawGraph drawGraph) {
+        return this.returnPercentage;
+    }
+
+
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    //EFFECTS: Creates the graph components that will be displayed
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        int scaler = (int) calculateCompoundInterest(initialCapital.get(1), returnPercentage, 50);
+        double xscale = ((double) getWidth() - 2 * borderGap) / (initialCapital.size() - 1);
+        double yscale = ((double) getHeight() - 2 * borderGap) / (scaler);
 
-        double xscale = ((double) getWidth() - 2 * BORDER_GAP) / (scores.size() - 1);
-        double yscale = ((double) getHeight() - 2 * BORDER_GAP) / (MAX_SCORE - 1);
+        Double amt = getAmount(this);
 
         java.util.List<Point> graphPoints = new ArrayList<Point>();
-        for (int i = 0; i < scores.size(); i++) {
-            int x1 = (int) (i * xscale + BORDER_GAP);
-            int y1 = (int) ((MAX_SCORE - scores.get(i)) * yscale + BORDER_GAP);
+        for (int i = 0; i < initialCapital.size(); i++) {
+            int x1 = (int) (i * xscale + borderGap);
+            int y1 = (int) (getHeight() - (calculateCompoundInterest(initialCapital.get(1),
+                    returnPercentage, i) * yscale + borderGap));
             graphPoints.add(new Point(x1, y1));
+
         }
 
         // create x and y axes
-        g2.drawLine(BORDER_GAP, getHeight() - BORDER_GAP, BORDER_GAP, BORDER_GAP);
-        g2.drawLine(BORDER_GAP, getHeight() - BORDER_GAP, getWidth() - BORDER_GAP, getHeight() - BORDER_GAP);
+        g2.drawLine(borderGap, getHeight() - borderGap, borderGap, borderGap);
+        g2.drawLine(borderGap, getHeight() - borderGap, getWidth() - borderGap, getHeight() - borderGap);
 
-        // create hatch marks for y axis.
-        for (int i = 0; i < Y_HATCH_CNT; i++) {
-            int x0 = BORDER_GAP;
-            int x1 = GRAPH_POINT_WIDTH + BORDER_GAP;
-            int y0 = getHeight() - (((i + 1) * (getHeight() - BORDER_GAP * 2)) / Y_HATCH_CNT + BORDER_GAP);
+        // create hatch marks and labels for y axis.
+        for (int i = 0; i <= yHatch; i++) {
+            int x0 = borderGap;
+            int x1 = pointWidth + borderGap;
+            int y0 = getHeight() - (((i) * (getHeight() - borderGap * 2)) / yHatch + borderGap);
             int y1 = y0;
             g2.drawLine(x0, y0, x1, y1);
+
+            yaxislabel = df.format(i * (maxScore / 2));
+            g2.drawString(yaxislabel, x0 - 50, y0);
         }
 
-        // and for x axis
-        for (int i = 0; i < scores.size() - 1; i++) {
-            int x0 = (i + 1) * (getWidth() - BORDER_GAP * 2) / (scores.size() - 1) + BORDER_GAP;
-            int x1 = x0;
-            int y0 = getHeight() - BORDER_GAP;
-            int y1 = y0 - GRAPH_POINT_WIDTH;
-            g2.drawLine(x0, y0, x1, y1);
+        // and for x-axis
+        for (int i = 0; i <= initialCapital.size() - 1; i++) {
+            if (i % 5 == 0) { // to display only for years 0, 5, 10, 15, ...
+                int x0 = (i) * (getWidth() - borderGap * 2) / (initialCapital.size() - 1) + borderGap;
+                int x1 = x0;
+                int y0 = getHeight() - borderGap;
+                int y1 = y0 - pointWidth;
+                g2.drawLine(x0, y0, x1, y1);
+
+                String xaxisLabel = Integer.toString(i);
+                g2.drawString(xaxisLabel, x0, y0 + 15);
+            }
         }
 
         Stroke oldStroke = g2.getStroke();
-        g2.setColor(GRAPH_COLOR);
-        g2.setStroke(GRAPH_STROKE);
+        g2.setColor(graphColour);
+        g2.setStroke(graphStroke);
         for (int i = 0; i < graphPoints.size() - 1; i++) {
             int x1 = graphPoints.get(i).x;
             int y1 = graphPoints.get(i).y;
@@ -79,49 +117,56 @@ public class DrawGraph extends JPanel {
         }
 
         g2.setStroke(oldStroke);
-        g2.setColor(GRAPH_POINT_COLOR);
+        g2.setColor(pointColour);
         for (int i = 0; i < graphPoints.size(); i++) {
-            int x = graphPoints.get(i).x - GRAPH_POINT_WIDTH / 2;
-            int y = graphPoints.get(i).y - GRAPH_POINT_WIDTH / 2;
-            int ovalW = GRAPH_POINT_WIDTH;
-            int ovalH = GRAPH_POINT_WIDTH;
+            int x = graphPoints.get(i).x - pointWidth / 2;
+            int y = graphPoints.get(i).y - pointWidth / 2;
+            int ovalW = pointWidth;
+            int ovalH = pointWidth;
             g2.fillOval(x, y, ovalW, ovalH);
         }
+
+
+        g2.setColor(Color.BLACK);
+        g2.drawString("Years", getWidth() / 2, getHeight() - borderGap / 2 + 20);
+
+
+        g2.rotate(-Math.PI / 2);
+        g2.drawString("Amount ($)", -getHeight() / 2, borderGap / 2 - 20);
+        g2.rotate(Math.PI / 2);
     }
+
+
+    //EFFECTS: Calculates the compound interest for the portfolio
+    public static double calculateCompoundInterest(Double principal, double rate, int time) {
+        double amount = principal * Math.pow(1 + rate, time);
+        return amount;
+    }
+
+
 
     @Override
+    //EFFECTS: Gets the dimensions of the graph
     public Dimension getPreferredSize() {
-        return new Dimension(PREF_W, PREF_H);
+        return new Dimension(initialWidth, initialHeight);
     }
 
-    private static void createAndShowGui() {
-        List<Double> scores = new ArrayList<Double>();
+    //EFFECTS: Generates the graph to display to the user
+    protected void createAndShowGui() {
+        List<Double> scores = new ArrayList<>();
         int maxDataPoints = 50;
-        double scale = 2;
-        int score = 1;
 
-        for (int i = 0; i < maxDataPoints ; i++) {
-            scale = scale * Math.exp(.03);
-            double show = score * scale;
-            scores.add(show);
+        for (int i = 1; i <= maxDataPoints; i++) {
+            double compoundInterest = calculateCompoundInterest(this.initialCapital.get(0), this.returnPercentage, i);
+            scores.add(compoundInterest);
         }
-        DrawGraph mainPanel = new DrawGraph(scores);
+        DrawGraph mainPanel = new DrawGraph(scores, this.returnPercentage);
 
-        JFrame frame = new JFrame("Return %");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JFrame frame = new JFrame("Value of Portfolio ($)");
         frame.getContentPane().add(mainPanel);
         frame.pack();
         frame.setLocationByPlatform(true);
         frame.setVisible(true);
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGui();
-            }
-        });
-    }
-
 
 }

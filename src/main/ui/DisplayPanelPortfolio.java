@@ -1,16 +1,18 @@
 package ui;
 
-import model.Market;
 import model.Portfolio;
 
+// Displays information for chosen portfolio in Portfolio tab
 public class DisplayPanelPortfolio extends PortfolioPanel {
     private Portfolio portfolio;
 
+    //CONSTRUCTOR
+    //EFFECTS: constructs a PortfolioPanel with name and size
     public DisplayPanelPortfolio() {
         super("Portfolio Information", 600, 600);
     }
 
-    //Displays the info of the given portfolio on the DisplayPanel panel
+    //EFFECTS: Displays the info of the given portfolio on the DisplayPanel panel
     public void displayInfo(Portfolio portfolio) {
         this.portfolio = portfolio;
 

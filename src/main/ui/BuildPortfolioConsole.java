@@ -8,20 +8,18 @@ import persistence.Writer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 // Portfolio Builder application
-public class BuildPortfolio2 {
+public class BuildPortfolioConsole {
     private Scanner input;
     private Market myMarket;
-
     private static final String JSON_STORAGE = "./data/market.json";
     private final Writer jsonWriter;
     private final Reader jsonReader;
 
     // EFFECTS: runs the portfolio builder application
-    public BuildPortfolio2() throws FileNotFoundException {
+    public BuildPortfolioConsole() throws FileNotFoundException {
         myMarket = new Market();
         initInvestments();
         initPortfolios();

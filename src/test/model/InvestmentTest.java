@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class InvestmentTest {
     private Investment testInvestment;
+    private Portfolio testP;
 
     @BeforeEach
     void runBefore() {
@@ -48,4 +49,20 @@ class InvestmentTest {
         testInvestment.setPrice(100);
         assertEquals(100, testInvestment.getPrice());
     }
+
+    @Test
+    void testEquals() {
+        Investment testInvestment2 = new Investment("Name", 5.6F, "IT", 50);
+        assertTrue(testInvestment.equals(testInvestment2));
+        assertEquals(testInvestment, testInvestment2);
+        assertTrue( testInvestment.hashCode() == testInvestment2.hashCode());
+    }
+
+    @Test
+    void testEquals2() {
+        testP = new Portfolio("a", "a", 10000);
+        assertFalse(testInvestment.equals(testP));
+
+    }
+
 }

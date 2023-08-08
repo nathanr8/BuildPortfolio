@@ -2,15 +2,18 @@ package ui;
 
 import model.Investment;
 
+// Displays information for chosen investment in Investment tab
 public class DisplayPanelInvestment extends InvestmentPanel {
-
     private Investment investment;
 
+    //CONSTRUCTOR
+    //EFFECTS: constructs an InvestmentPanel with name and size
     public DisplayPanelInvestment() {
-        super("Investment Information", 400, 400);
+        super("Investment Information", 500, 500);
     }
 
-    //Displays the info of the given investment on the DisplayPanel panel
+    //EFFECTS: Initialized fields and labels to display the info of
+    //         the given investment on the DisplayPanel panel
     public void displayInfo(Investment investment) {
         this.investment = investment;
 

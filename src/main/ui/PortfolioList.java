@@ -8,21 +8,31 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 
+// CITATION: Code inspired by the following sources:
+// https://www.youtube.com/watch?v=Kmgo00avvEw&list=LL&index=5&t=16276s
+// https://docs.oracle.com/javase%2F7%2Fdocs%2Fapi%2F%2F/javax/swing/JList.html
+// https://stackoverflow.com/questions/1097366/java-swing-revalidate-vs-repaint
+// https://www.geeksforgeeks.org/arraylist-removeall-method-in-java-with-examples/
+// https://www.youtube.com/watch?v=OJSAnlzXRDk
+
+
+// Creates display for the names of portfolios to be shown inside the portfolio panel
 public class PortfolioList extends JPanel {
     private DefaultListModel<String> listModel;
     private JList<Portfolio> list2;
     private final DisplayPanelPortfolio displayPanelPortfolio;
     private final MarketManager marketManager;
 
-    //Instantiates PortfolioList Panel
+    //CONSTRUCTOR
+    //EFFECTS: Instantiates PortfolioList Panel using MarketManager and DisplayPanelPortfolio
+    //         calls reload to refresh PortfolioList display
     public PortfolioList(MarketManager marketManager, DisplayPanelPortfolio displayPanelPortfolio) {
         this.displayPanelPortfolio = displayPanelPortfolio;
         this.marketManager = marketManager;
         reload();
     }
 
-    //"Refreshes" List so all changes are shown so there is no discrepancy between that is in the list and
-    // what is shown.
+    //EFFECTS: "reloads" list so all changes are shown
     public void reload() {
         this.removeAll();
         this.revalidate();
@@ -34,7 +44,8 @@ public class PortfolioList extends JPanel {
         initializeJList();
     }
 
-    //Initialises List with ListModel and sets basic controls to navigate through the list
+    //EFFECTS: Initialises List with ListModel, controls to navigate through the list,
+    //         calls display info to show information for portfolio selected from display panel list
     private void initializeJList() {
         list2 = new JList(listModel);
         list2.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -45,7 +56,6 @@ public class PortfolioList extends JPanel {
         listScroller.setPreferredSize(new Dimension(500, 500));
         add(listScroller);
 
-        //Listener detects selection of investment and displays the appropriate Data
         list2.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -58,13 +68,8 @@ public class PortfolioList extends JPanel {
         });
     }
 
-    //Returns JLIST object so that other classes can operate on it.
+    //EFFECTS: Returns JList object so other classes can operate on it.
     public JList getJList() {
         return this.list2;
     }
-
-
-
-
-
 }

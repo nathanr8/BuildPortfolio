@@ -14,7 +14,16 @@ As a Computer Science and Business major, I'm passionate about leveraging techno
 - As a user, I want to be able to delete an investment in a pre-existing portfolio
 - As a user, I want to be able to delete an investment portfolio
 - As a user, I want a visual display of an investment portfolio
-- As a user, I want to be able to see a list of all of my investments
+- As a user, I want to be able to see a list of all the market investments
 - As a user, I want to be able to see a list of all of my portfolios
 - As a user, I want to be able to be able to save all current investments and portfolios to a file (if I so choose)
 - As a user, I want to be able to be able to load my portfolios and investments from file (if I so choose)
+
+# Instructions for Grader
+- You can generate the first required action related to adding Xs to a Y by clicking "View Investments" or on the Investments button on the pane, and then click the "New Investment" button. Then, enter a name for your investment, an initial price (integer) for your investment, the expected return in percentage for your investment (positive double), and its economic sector. 
+- You can generate the second required action related to adding Xs to a Y by clicking "View Portfolios" or on the Portfolios button on the pane. Then select a portfolio or click the "New Portfolio" button, and enter the name of your portfolio, the integer value initial capital you are starting this portfolio with, and its economic sector. Then, click on the portfolio, and select the "Add Investment" button, and enter the name of the investment you would like to add, and the quantity.
+- You can locate my visual component by clicking a portfolio in the portfolio tab, and pressing the "View Chart" button.
+- You can save the state of my application by clicking on the "Save Market" button on the main menu of the application.
+- You can reload the state of my application by clicking on the "Load Market" button on the main menu of the application.
+
+

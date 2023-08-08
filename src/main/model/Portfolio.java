@@ -111,6 +111,11 @@ public class Portfolio implements Writable {
     //EFFECTS: calculates $ amount return for portfolio
     public double calculateReturnAmountDollar() {
         double i = 0.0;
+
+        if (investments.isEmpty()) {
+            return i;
+        }
+
         for (Investment inv : investments) {
             Investment temp = investmentMap.get(inv.getInvestmentname());
             if (temp.getSector().equals(this.getPreferredSector())) {
@@ -132,17 +137,33 @@ public class Portfolio implements Writable {
     public String calculateReturnAmountPercent() {
         double i = this.calculateReturnAmountDollar();
         double j = this.getPortfolioCapital();
+
+        if (i == 0.0) {
+            return df.format(0.0);
+        }
+
         return df.format((i / j) * 100);
     }
 
-    //REQUIRES: quantity >= 1, portfolio # of selected investments >= quantity,
     //MODIFIES: this
     //EFFECTS: removes investment from portfolio, adds back capital to available capital
     public void removeInvestment(Investment i, int quantity) {
-        for (int n = 0; n < quantity; n++) {
-            this.investments.remove(i);
+        Integer tester = 0;
+        for (Investment inv: this.investments) {
+            if (inv.getInvestmentname().equals(i.getInvestmentname())) {
+                tester += 1;
+            }
         }
-        availableCapital = availableCapital + (i.getPrice() * quantity);
+
+        if (quantity > tester) {
+            return;
+        } else {
+            for (int n = 0; n < quantity; n++) {
+                this.investments.remove(i);
+                availableCapital = availableCapital + i.getPrice();
+            }
+        }
+
     }
 
     // Writes a portfolio to JSON data
@@ -167,25 +188,5 @@ public class Portfolio implements Writable {
 
         return jsonArray;
     }
-
-
-    public String getInvestmentNames() {
-        StringBuilder investmentNames = new StringBuilder();
-
-        for (Investment investment : investments) { // assuming investments is your list of Investment objects
-            investmentNames.append(investment.getInvestmentname()).append(", ");
-        }
-
-        // Remove trailing comma and space
-        if (investmentNames.length() > 0) {
-            investmentNames.setLength(investmentNames.length() - 2);
-        }
-
-        return investmentNames.toString();
-    }
-
-
-
-
 
 }

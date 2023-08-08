@@ -109,7 +109,6 @@ public class PortfolioTest {
         assertEquals(2, testPortfolio.getInvestments().size());
         testPortfolio.removeInvestment(testInvestment, 1);
         assertEquals(1, testPortfolio.getInvestments().size());
-
     }
 
     @Test
@@ -227,4 +226,56 @@ public class PortfolioTest {
         String j = testPortfolio.calculateReturnAmountPercent();
         assertEquals("4.22", j);
     }
+
+    @Test
+    void testReturnCalcEmpty() {
+        assertEquals(0.0, testPortfolio.calculateReturnAmountDollar());
+    }
+
+    @Test
+    void testReturnCalcEmpty2() {
+        assertEquals("0.00", testPortfolio.calculateReturnAmountPercent());
+    }
+
+    @Test
+    void testDeleteInvEmpty() {
+        testPortfolio.removeInvestment(testInvestment2, 5);
+        assertEquals(50000, testPortfolio.getAvailableCapital());
+    }
+
+    @Test
+    void testDeleteInvTooMany() {
+        testPortfolio.addInvestments(testInvestment2, 5);
+        testPortfolio.removeInvestment(testInvestment2, 6);
+
+        assertTrue(testPortfolio.getInvestments().contains(testInvestment2));
+        assertEquals(49860, testPortfolio.getAvailableCapital());
+    }
+
+    @Test
+    void testDeleteInvTooMany2() {
+        testPortfolio.addInvestments(testInvestment2, 5);
+        testPortfolio.removeInvestment(testInvestment2, 3);
+        assertTrue(testPortfolio.getInvestments().contains(testInvestment2));
+        assertEquals(49944, testPortfolio.getAvailableCapital());
+
+        testPortfolio.removeInvestment(testInvestment2, 6);
+        assertTrue(testPortfolio.getInvestments().contains(testInvestment2));
+        assertEquals(49944, testPortfolio.getAvailableCapital());
+    }
+
+    @Test
+    void testDeleteInvExact() {
+        testPortfolio.addInvestments(testInvestment2, 5);
+        testPortfolio.removeInvestment(testInvestment2, 3);
+        assertTrue(testPortfolio.getInvestments().contains(testInvestment2));
+        assertEquals(49944, testPortfolio.getAvailableCapital());
+
+        testPortfolio.removeInvestment(testInvestment2, 2);
+        assertFalse(testPortfolio.getInvestments().contains(testInvestment2));
+        assertEquals(50000, testPortfolio.getAvailableCapital());
+    }
+
+
+
 }

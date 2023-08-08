@@ -1,17 +1,20 @@
 package ui;
 
+import model.Investment;
+import model.Portfolio;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
+// Creates the main Investment Panel, displays InvestmentList and DisplayPanelInvestment
 public class InvestmentsUI extends JPanel {
     private final InvestmentList il;
     private final DisplayPanelInvestment dp;
     private final MarketManager market;
 
-    //Instantiates Panel and creates components
+    //EFFECTS: Instantiates Panel and creates components
     public InvestmentsUI(MarketManager market) {
         Dimension size = getPreferredSize();
         size.width = 220;
@@ -19,17 +22,16 @@ public class InvestmentsUI extends JPanel {
         setBorder(BorderFactory.createTitledBorder("Investments"));
         this.market = market;
 
-        //creates the two main panels in the record panel
         dp = new DisplayPanelInvestment();
         il = new InvestmentList(market, dp);
 
-        Dimension minSize = new Dimension(400, 400);
+        Dimension minSize = new Dimension(800, 800);
         dp.setMinimumSize(minSize);
         il.setMinimumSize(minSize);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, il, dp);
         splitPane.setOneTouchExpandable(false);
-        splitPane.setDividerLocation(400);
+        splitPane.setDividerLocation(500);
 
         JButton newInv = new JButton("New Investment");
         JButton delInv = new JButton("Delete Investment");
@@ -43,7 +45,7 @@ public class InvestmentsUI extends JPanel {
         addReload(refresh);
     }
 
-    // Creates the components
+    // EFFECTS: Creates the components, buttons
     private void createComponents(JSplitPane pane, JButton bt1, JButton bt2, JButton reload) {
         setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
@@ -73,22 +75,19 @@ public class InvestmentsUI extends JPanel {
     }
 
 
+    //EFFECTS: Reloads market display so list and UI are in sync
     private void addReload(JButton reload) {
         reload.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    market.save();
-                    il.reload();
-                } catch (IOException x) {
-                    JOptionPane.showMessageDialog(null,
-                            "Error saving Data", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+                il.reload();
             }
         });
     }
 
-    // Adds Button 1 to panel
+    // EFFECTS: Adds new inventory button to panel with action listener
+    //          upon activation, prompts user to fill out investment info,
+    //          adds investment to market and reloads investment list
     private void newInvestmentBtn(JButton bt1) {
         bt1.addActionListener(new ActionListener() {
             @Override
@@ -106,36 +105,31 @@ public class InvestmentsUI extends JPanel {
                 market.myMarket.newInvestment(response, response3, response4, response2);
 
                 il.reload();
-                try {
-                    market.save();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Error saving Data", "Error", JOptionPane.ERROR_MESSAGE);
-                }
             }
         });
     }
 
-    // Adds Button 2 to panel
+    // EFFECTS: Adds delete inventory button to panel with action listener
+    //          upon activation, deletes selected investment from market and reloads investment list
     private void delInvButton(JButton bt1) {
         bt1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int num = il.getJList().getSelectedIndex();
-                market.getMarket().getInvestmentList().remove(num);
-                il.reload();
-                try {
-                    market.save();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Error saving Data", "Error", JOptionPane.ERROR_MESSAGE);
+                Investment inv = market.getMarket().getInvestmentList().remove(num);
+                for (Portfolio p: market.getMarket().getPortfolioList()) {
+                    if (p.getInvestments().contains(inv)) {
+                        while (p.getInvestments().contains(inv)) {
+                            p.removeInvestment(inv, 1);
+                        }
+                    }
                 }
+                il.reload();
             }
         });
     }
 
-
-
-
-    //Returns InvestmentList panel for other panels to use.
+    //EFFECTS: Returns InvestmentList panel for other panels to use.
     public InvestmentList getInvestmentList() {
         return il;
     }

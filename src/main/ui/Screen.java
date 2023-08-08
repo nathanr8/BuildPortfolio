@@ -1,11 +1,14 @@
 package ui;
 
-import model.Market;
-
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
 
+// CITATION: Code inspired by the following sources:
+// https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
+// https://www.youtube.com/watch?v=qP2tXh4Pd_8
+// https://www.youtube.com/watch?v=Kmgo00avvEw&list=LL&index=5&t=16276s
+
+// Creates the main screen object for which main calls to start GUI
 public class Screen extends JFrame {
     private final MarketManager marketManager;
     private final InvestmentsUI investmentsUI;
@@ -13,21 +16,11 @@ public class Screen extends JFrame {
     private final JTabbedPane pane;
     private final MainMenu mainMenu;
 
-    // Initialises the program with title and automatically reloads data from Backup file.
+    //EFFECTS: Main GUI, initialises the program with title, main menu, investment and portfolio UIs
     public Screen(String title) {
         super(title);
         marketManager = new MarketManager();
-//        try {
-//            marketManager.load();           //Reload method to get data
-//        } catch (IOException e) {
-//            JOptionPane.showMessageDialog(null, "Back-up not Found!");
-//            marketManager.myMarket = new Market();
-//        }
-
-        // set layout manager
         setLayout(new GridLayout());
-
-        // Create Swing Component
         pane = new JTabbedPane();
         pane.setTabPlacement(SwingConstants.LEFT);
 
@@ -38,20 +31,8 @@ public class Screen extends JFrame {
         pane.addTab("Main Menu", mainMenu);
         pane.addTab("Investments", investmentsUI);
         pane.addTab("Portfolios", portfoliosUI);
-
-
         Container cont = getContentPane();
         cont.add(pane);
-    }
-
-    //Returns investments pane
-    public InvestmentsUI getInvestmentsUI() {
-        return this.investmentsUI;
-    }
-
-    //Returns investments pane
-    public PortfoliosUI getPortfoliosUI() {
-        return this.portfoliosUI;
     }
 
 }

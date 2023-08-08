@@ -89,26 +89,12 @@ public class Investment implements Writable {
 
         Investment that = (Investment) o;
 
-        if (Float.compare(that.returnPercentage, returnPercentage) != 0) {
-            return false;
-        }
-        if (price != that.price) {
-            return false;
-        }
-        if (!Objects.equals(investmentname, that.investmentname)) {
-            return false;
-        }
-        return Objects.equals(sector, that.sector);
+        return Objects.equals(investmentname, that.investmentname);
     }
-
 
     @Override
     public int hashCode() {
-        int result = investmentname != null ? investmentname.hashCode() : 0;
-        result = 31 * result + (returnPercentage != +0.0f ? Float.floatToIntBits(returnPercentage) : 0);
-        result = 31 * result + (sector != null ? sector.hashCode() : 0);
-        result = 31 * result + price;
-        return result;
+        return investmentname != null ? investmentname.hashCode() : 0;
     }
 }
 

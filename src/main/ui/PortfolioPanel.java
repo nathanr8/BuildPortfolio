@@ -5,10 +5,18 @@ import model.Portfolio;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.text.DecimalFormat;
 
+// CITATION: Code inspired by the following sources:
+// https://www.youtube.com/watch?v=Kmgo00avvEw&list=LL&index=5&t=16276s
+// https://docs.oracle.com/javase%2F7%2Fdocs%2Fapi%2F%2F/javax/swing/JTextField.html
+// https://docs.oracle.com/javase/8/docs/api/javax/swing/JScrollPane.html
+// https://www.youtube.com/watch?v=OJSAnlzXRDk
+//
+
+// Used to display portfolio information, including displaying investments inside portfolio
 public abstract class PortfolioPanel extends JPanel {
     protected GridBagConstraints gc;
-    //creates Labels, and Fields
     protected JLabel nameLabel;
     protected JLabel sectorLabel;
     protected JLabel initCapLabel;
@@ -23,8 +31,9 @@ public abstract class PortfolioPanel extends JPanel {
     protected JTable investmentsTable;
     protected JScrollPane investmentsScrollPane;
     protected JTextField returnField;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
-    //Initialises the Panel
+    //EFFECTS: Initialises the Panel using name and integers for size
     public PortfolioPanel(String str, int num, int num2) {
         Dimension size = getPreferredSize();
         size.width = num;
@@ -35,23 +44,25 @@ public abstract class PortfolioPanel extends JPanel {
         gc = new GridBagConstraints();
     }
 
-    //Initialises the Labels
+    //EFFECTS: Initialises the Labels to be displayed
     protected void intializeLabels() {
         nameLabel = new JLabel("Name: ");
-        initCapLabel = new JLabel("Initial Capital: ");
-        currCapLabel = new JLabel("Current Capital: ");
+        initCapLabel = new JLabel("Capital Invested: ");
+        currCapLabel = new JLabel("Current Capital Remaining: ");
         sectorLabel = new JLabel("Sector: ");
         investmentsLabel = new JLabel("Investments: ");
         returnLabel = new JLabel("Return %: ");
 
     }
 
-    //Initialises the Fields
+    //EFFECTS: Initialises the Fields that are displayed, including JTable to display the
+    //         investments currently inside portfolio
     protected void initalizeFields(Portfolio portfolio) {
         nameField = new JTextField(portfolio.getPortfolioName(), 15);
-        initCapField = new JTextField(Integer.toString(portfolio.getInitialCapital()), 15);
+        initCapField = new JTextField(Integer.toString(portfolio.getPortfolioCapital()), 15);
         currCapField = new JTextField(Integer.toString(portfolio.getAvailableCapital()), 15);
         sectorField = new JTextField(portfolio.getPreferredSector(), 15);
+
         returnField = new JTextField(portfolio.calculateReturnAmountPercent(), 15);
 
         String[] columnNames = {"Name", "Price", "Sector", "Return %"};
@@ -63,7 +74,7 @@ public abstract class PortfolioPanel extends JPanel {
             tableData[i][0] = investment.getInvestmentname();
             tableData[i][1] = Float.toString(investment.getPrice());
             tableData[i][2] = investment.getSector();
-            tableData[i][3] = Double.toString(investment.getReturnPercentage());
+            tableData[i][3] = df.format(investment.getReturnPercentage());
         }
 
         investmentsTable = new JTable(tableData, columnNames);
@@ -73,7 +84,7 @@ public abstract class PortfolioPanel extends JPanel {
 
     }
 
-    //Adjusts the Fields for their specific use
+    //EFFECTS: Makes so fields value cannot be changed
     protected void setFieldQualities() {
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         nameField.setEditable(false);
@@ -84,7 +95,7 @@ public abstract class PortfolioPanel extends JPanel {
         investmentsTable.setEnabled(false);
     }
 
-    //Adds Labels onto the Panel
+    //EFFECTS: Adds Labels onto the Panel
     protected void addLabels() {
         gc.anchor = GridBagConstraints.LINE_END;
         gc.gridx = 0;
@@ -102,7 +113,7 @@ public abstract class PortfolioPanel extends JPanel {
         add(sectorLabel, gc);
     }
 
-    //Adds Fields Onto the Panel
+    //EFFECTS: Adds Fields Onto the Panel
     protected void addFields() {
         gc.anchor = GridBagConstraints.LINE_START;
         gc.fill = GridBagConstraints.HORIZONTAL;
