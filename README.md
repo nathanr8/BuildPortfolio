@@ -37,3 +37,8 @@ As a Computer Science and Business major, I'm passionate about leveraging techno
 - Failed to add investment to portfolio at Wed Aug 09 20:17:39 PDT 2023
 - Viewed Portfolio Chart at Wed Aug 09 20:17:46 PDT 2023
 - Removed Portfolio from Market at Wed Aug 09 20:17:58 PDT 2023
+
+
+## Phase 4: Task 3
+- If I had more time to refactor my project, I would first work on finding a way to grant portfolios access to investments within the market class, thereby eliminating duplication. I believe this adjustment would result in a smoother backend retrieval of investment objects and fewer potential errors caused by the current redundancy. Moreover, it would conserve storage space, a factor that grows in significance as programs become larger.
+- Additionally, I would aim to establish a more abstract class to capture the shared behaviour involved in displaying both the portfolio and investment classes. I would intend to create a 'MarketUI' class, granting it access to its internal elements, and crafting individual abstract classes for presenting the lists of investments and portfolios. This approach would effectively reduce code duplication and establish a more consistent method of presenting diverse data types. The same principle would apply to the panel classes and display classes.
