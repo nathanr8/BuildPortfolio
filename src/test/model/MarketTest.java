@@ -36,7 +36,9 @@ public class MarketTest {
     @Test
     void testConstructor() {
         assertEquals(0, testMarket.getInvestmentList().size());
+        assertEquals(0, testMarket.getInvestmentListDelete().size());
         assertEquals(0, testMarket.getPortfolioList().size());
+        assertEquals(0, testMarket.getPortfolioListDelete().size());
     }
 
     @Test
@@ -58,6 +60,8 @@ public class MarketTest {
     void testAddInitInvestments() {
         testMarket.addInitInvestments();
         assertEquals(5, testMarket.getInvestmentList().size());
+        assertEquals(5, testMarket.getInvestmentListDelete().size());
+
     }
 
     @Test
@@ -148,6 +152,12 @@ public class MarketTest {
         JSONArray investmentArray = jsonTest.getJSONArray("investment");
         assertEquals(1, investmentArray.length());
 
+    }
+
+    @Test
+    void testGetEventLog() {
+        EventLog el = testMarket.getEventLog();
+        assertEquals(el, testMarket.getEventLog());
     }
 
 }

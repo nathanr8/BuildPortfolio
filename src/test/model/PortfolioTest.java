@@ -193,9 +193,12 @@ public class PortfolioTest {
         testPortfolio.addInvestments(testInvestment, 5);
         testPortfolio.addInvestments(testInvestment2, 16);
         int i = testPortfolio.getPortfolioCapital();
+        int ii = testPortfolio.getPortfolioCapitalChart();
         assertEquals(698, i);
+        assertEquals(698, ii);
 
     }
+
 
     @Test
     void testCalculatePortfolioReturnPercent() {
