@@ -27,3 +27,13 @@ As a Computer Science and Business major, I'm passionate about leveraging techno
 - You can reload the state of my application by clicking on the "Load Market" button on the main menu of the application.
 
 
+## Phase 4: Task 2
+- New Market. at Wed Aug 09 20:15:54 PDT 2023
+- New Investment added to market at Wed Aug 09 20:16:21 PDT 2023
+- New Investment added to market at Wed Aug 09 20:16:34 PDT 2023
+- New Portfolio added to market at Wed Aug 09 20:16:50 PDT 2023
+- Added investment to portfolio at Wed Aug 09 20:17:09 PDT 2023
+- Removed Investment from Market at Wed Aug 09 20:17:21 PDT 2023
+- Failed to add investment to portfolio at Wed Aug 09 20:17:39 PDT 2023
+- Viewed Portfolio Chart at Wed Aug 09 20:17:46 PDT 2023
+- Removed Portfolio from Market at Wed Aug 09 20:17:58 PDT 2023

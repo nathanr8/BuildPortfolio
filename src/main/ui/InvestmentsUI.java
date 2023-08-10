@@ -116,7 +116,7 @@ public class InvestmentsUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int num = il.getJList().getSelectedIndex();
-                Investment inv = market.getMarket().getInvestmentList().remove(num);
+                Investment inv = market.getMarket().getInvestmentListDelete().remove(num);
                 for (Portfolio p: market.getMarket().getPortfolioList()) {
                     if (p.getInvestments().contains(inv)) {
                         while (p.getInvestments().contains(inv)) {

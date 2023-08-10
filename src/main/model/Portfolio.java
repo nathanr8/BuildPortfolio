@@ -64,6 +64,13 @@ public class Portfolio implements Writable {
         return (i - j);
     }
 
+    public int getPortfolioCapitalChart() {
+        int i = this.getInitialCapital();
+        int j = this.getAvailableCapital();
+        EventLog.getInstance().logEvent(new Event("Viewed Portfolio Chart"));
+        return (i - j);
+    }
+
     // setters
 
     //MODIFIES: this
@@ -102,16 +109,18 @@ public class Portfolio implements Writable {
                 investmentMap.put(i.getInvestmentname(), i);
             }
             this.availableCapital = availableCapital - (i.getPrice() * quantity);
+            EventLog.getInstance().logEvent(new Event("Added investment to portfolio"));
             return "Investment added successfully!";
         } else {
+            EventLog.getInstance().logEvent(new Event("Failed to add investment to portfolio"));
             return "Sorry, this portfolio does not have enough available capital.";
         }
+
     }
 
     //EFFECTS: calculates $ amount return for portfolio
     public double calculateReturnAmountDollar() {
         double i = 0.0;
-
         if (investments.isEmpty()) {
             return i;
         }
@@ -156,11 +165,13 @@ public class Portfolio implements Writable {
         }
 
         if (quantity > tester) {
+            EventLog.getInstance().logEvent(new Event("Failed to remove investment from portfolio"));
             return;
         } else {
             for (int n = 0; n < quantity; n++) {
                 this.investments.remove(i);
                 availableCapital = availableCapital + i.getPrice();
+                EventLog.getInstance().logEvent(new Event("Removed investment from portfolio"));
             }
         }
 

@@ -136,7 +136,7 @@ public class PortfoliosUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int num = pl.getJList().getSelectedIndex();
-                market.getMarket().getPortfolioList().remove(num);
+                market.getMarket().getPortfolioListDelete().remove(num);
                 pl.reload();
             }
         });
@@ -197,7 +197,7 @@ public class PortfoliosUI extends JPanel {
                 int num = pl.getJList().getSelectedIndex();
                 Portfolio p = market.getMarket().getPortfolioList().get(num);
                 ArrayList<Double> i = new ArrayList<>();
-                double j = (double) p.getPortfolioCapital();
+                double j = (double) p.getPortfolioCapitalChart();
                 i.add(j);
                 i.add(j);
                 Double returnDollar = p.calculateReturnAmountDollar();

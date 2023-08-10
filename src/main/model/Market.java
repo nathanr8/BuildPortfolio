@@ -18,14 +18,15 @@ public class Market implements Writable {
     private Portfolio portfolioB;
     private final ArrayList<Investment> investmentList;
     private final ArrayList<Portfolio> portfolioList;
+    private EventLog eventLog;
 
     // Constructor
     // EFFECTS: Constructs a market with initial investments and portfolios empty
     public Market() {
         investmentList = new ArrayList<>();
         portfolioList = new ArrayList<>();
-//        addInitPortfolios();
-//        addInitInvestments();
+        eventLog = EventLog.getInstance();
+        EventLog.getInstance().logEvent(new Event("New Market."));
 
     }
 
@@ -34,7 +35,17 @@ public class Market implements Writable {
         return this.investmentList;
     }
 
+    public ArrayList<Investment> getInvestmentListDelete() {
+        EventLog.getInstance().logEvent(new Event("Removed Investment from Market"));
+        return this.investmentList;
+    }
+
     public ArrayList<Portfolio> getPortfolioList() {
+        return this.portfolioList;
+    }
+
+    public ArrayList<Portfolio> getPortfolioListDelete() {
+        EventLog.getInstance().logEvent(new Event("Removed Portfolio from Market"));
         return this.portfolioList;
     }
 
@@ -44,6 +55,7 @@ public class Market implements Writable {
     //EFFECTS: adds a portfolio to the market's portfolio list
     public void addPortfolio(Portfolio portfolio) {
         portfolioList.add(portfolio);
+        EventLog.getInstance().logEvent(new Event("Add portfolio to market"));
     }
 
     //REQUIRES: investment exits
@@ -51,6 +63,7 @@ public class Market implements Writable {
     //EFFECTS: adds an investment to the market's investment list
     public void addInvestment(Investment investment) {
         investmentList.add(investment);
+        EventLog.getInstance().logEvent(new Event("Add investment to market"));
     }
 
 
@@ -74,19 +87,7 @@ public class Market implements Writable {
     // EFFECTS: initializes portfolios, adds them to market to have starting portfolios to use
     public void addInitPortfolios() {
         portfolioA = new Portfolio("PortfolioA", "IT", 10000);
-//        portfolioA.addInvestments(google, 2);
-//        portfolioA.addInvestments(blackrock, 2);
-//        portfolioA.addInvestments(tesla, 2);
-//        portfolioA.addInvestments(nextEra, 2);
-//        portfolioA.addInvestments(pfizer, 2);
-
-
         portfolioB = new Portfolio("PortfolioB", "Energy", 10000);
-//        portfolioB.addInvestments(google, 2);
-//        portfolioB.addInvestments(blackrock, 2);
-//        portfolioB.addInvestments(tesla, 2);
-//        portfolioB.addInvestments(nextEra, 2);
-//        portfolioB.addInvestments(pfizer, 2);
         portfolioList.add(portfolioA);
         portfolioList.add(portfolioB);
     }
@@ -96,6 +97,7 @@ public class Market implements Writable {
     //EFFECTS: removes portfolio from portfolioList
     public void deletePortfolio(Portfolio portfolioName) {
         portfolioList.remove(portfolioName);
+        EventLog.getInstance().logEvent(new Event("Deleted Portfolio"));
     }
 
     // REQUIRES: portfolioName is the name of an existing portfolio
@@ -131,6 +133,7 @@ public class Market implements Writable {
         newPortfolio.setInitialCapital(capital);
         newPortfolio.setAvailableCapital(capital);
         portfolioList.add(newPortfolio);
+        EventLog.getInstance().logEvent(new Event("New Portfolio added to market"));
         return newPortfolio;
     }
 
@@ -141,7 +144,10 @@ public class Market implements Writable {
         Investment newInvestment;
         newInvestment = new Investment(name, returnP, sector, price);
         investmentList.add(newInvestment);
+        EventLog.getInstance().logEvent(new Event("New Investment added to market"));
         return newInvestment;
+
+
     }
 
     // EFFECTS: Writes a market to JSON data
@@ -175,7 +181,9 @@ public class Market implements Writable {
         return jsonArray;
     }
 
-
+    public EventLog getEventLog() {
+        return eventLog;
+    }
 
 
 

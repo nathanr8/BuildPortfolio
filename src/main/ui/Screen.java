@@ -1,7 +1,12 @@
 package ui;
 
+import model.Event;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Iterator;
 
 // CITATION: Code inspired by the following sources:
 // https://docs.oracle.com/javase/tutorial/uiswing/components/tabbedpane.html
@@ -33,6 +38,17 @@ public class Screen extends JFrame {
         pane.addTab("Portfolios", portfoliosUI);
         Container cont = getContentPane();
         cont.add(pane);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                for (Iterator<model.Event> it = marketManager.getMarket().getEventLog().iterator(); it.hasNext(); ) {
+                    Event event = it.next();
+                    System.out.println(event.getDescription() + " at " + event.getDate());
+                }
+            }
+        });
+
+
     }
 
 }
