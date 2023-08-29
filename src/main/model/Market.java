@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-// Represents a market with investments and portfolios
+// Represents a market with investments and portfolios.
 public class Market implements Writable {
     private Investment google;
     private Investment blackrock;

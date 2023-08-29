@@ -2,7 +2,7 @@ package ui;
 
 import javax.swing.*;
 
-// Runs the main MarketManager GUI
+// Runs the main MarketManager GUI.
 public class Main {
 
     public static void main(String[] args) {
