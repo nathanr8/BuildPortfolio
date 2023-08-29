@@ -1,0 +1,70 @@
+{
+    "portfolio": [
+        {
+            "InvestmentsP": [],
+            "Strong economic sector": "Financial",
+            "Starting Capital": 10000,
+            "Available Capital": 10000,
+            "Name": "PortfolioC"
+        },
+        {
+            "InvestmentsP": [],
+            "Strong economic sector": "IT",
+            "Starting Capital": 10000,
+            "Available Capital": 10000,
+            "Name": "B"
+        },
+        {
+            "InvestmentsP": [],
+            "Strong economic sector": "it",
+            "Starting Capital": 10000,
+            "Available Capital": 10000,
+            "Name": "C"
+        },
+        {
+            "InvestmentsP": [],
+            "Strong economic sector": "IT",
+            "Starting Capital": 10000,
+            "Available Capital": 10000,
+            "Name": "D"
+        }
+    ],
+    "investment": [
+        {
+            "Price": 200,
+            "Sector": "IT",
+            "Return %": 8.1,
+            "Name": "Google"
+        },
+        {
+            "Price": 150,
+            "Sector": "Financial",
+            "Return %": 6.2,
+            "Name": "Blackrock"
+        },
+        {
+            "Price": 300,
+            "Sector": "Energy",
+            "Return %": 12.2,
+            "Name": "Tesla"
+        },
+        {
+            "Price": 50,
+            "Sector": "Utilities",
+            "Return %": 7.2,
+            "Name": "NextEra"
+        },
+        {
+            "Price": 100,
+            "Sector": "Healthcare",
+            "Return %": 5.7,
+            "Name": "Pfizer"
+        },
+        {
+            "Price": 100,
+            "Sector": "IT",
+            "Return %": 10,
+            "Name": "NA"
+        }
+    ]
+}

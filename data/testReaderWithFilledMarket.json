@@ -1,0 +1,20 @@
+{
+    "portfolio": [{
+        "InvestmentsP": [{
+            "Price": 50,
+            "Sector": "IT",
+            "Return %": 12.2,
+            "Name": "TNAME"
+        }],
+        "Strong economic sector": "IT",
+        "Starting Capital": 5000,
+        "Available Capital": 4950,
+        "Name": "NAME1"
+    }],
+    "investment": [{
+        "Price": 50,
+        "Sector": "IT",
+        "Return %": 12.2,
+        "Name": "TNAME"
+    }]
+}
